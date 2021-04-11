@@ -1,0 +1,338 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "Admin",
+      "email": "Admin@mail.com",
+      "password": "1234",
+      "role": "admin",
+      "cart": [
+        {
+          "qty": 3,
+          "nama": "Meja MALM",
+          "harga": 2999999,
+          "total": 2999999,
+          "image": "https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/359/0735975_PE740309_S4.jpg",
+          "type": "Coklat Tua"
+        },
+        {
+          "qty": 1,
+          "nama": "Tirai",
+          "harga": "149999",
+          "total": 149999,
+          "image": "https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/251/0025145_PE242082_S4.jpg",
+          "type": "Krem"
+        },
+        {
+          "qty": 1,
+          "nama": "Meja Makan VEDBO",
+          "harga": 18999999,
+          "total": 18999999,
+          "image": "https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/091/0809104_PE770961_S4.jpg",
+          "type": "Putih"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "username": "Allysa",
+      "email": "allysa@mail.com",
+      "password": "1234",
+      "role": "user",
+      "cart": []
+    },
+    {
+      "username": "Upin",
+      "email": "upin@mail.com",
+      "password": "1234",
+      "role": "user",
+      "cart": [],
+      "id": 3
+    },
+    {
+      "username": "Ipin",
+      "email": "ipin@mail.com",
+      "password": "1234",
+      "role": "user",
+      "cart": [],
+      "id": 4
+    },
+    {
+      "username": "Papoy",
+      "email": "papoy@mail.com",
+      "password": "1234",
+      "role": "user",
+      "cart": [],
+      "id": 5
+    },
+    {
+      "username": "tytrack",
+      "email": "ty@mail.com",
+      "password": "1234",
+      "role": "user",
+      "cart": [],
+      "id": 6
+    },
+    {
+      "username": "mark",
+      "email": "mark@mail.com",
+      "password": "1234",
+      "role": "user",
+      "cart": [],
+      "id": 7
+    },
+    {
+      "username": "allysa",
+      "email": "allysa@mail.com",
+      "password": "1234",
+      "role": "user",
+      "cart": [],
+      "id": 8
+    },
+    {
+      "username": "allysa",
+      "email": "allysa@mail.com",
+      "password": "1234",
+      "role": "user",
+      "cart": [],
+      "id": 9
+    },
+    {
+      "username": "allysa",
+      "email": "allysa@mail.com",
+      "password": "1234",
+      "role": "user",
+      "cart": [],
+      "id": 10
+    },
+    {
+      "username": "allysa",
+      "email": "allysa@mail.com",
+      "password": "1234",
+      "role": "user",
+      "cart": [],
+      "id": 11
+    },
+    {
+      "username": "Jeno",
+      "email": "jenolee@mail.com",
+      "password": "1234",
+      "role": "user",
+      "cart": []
+    }
+  ],
+  "products": [
+    {
+      "nama": "Tirai",
+      "deskripsi": "Vitrase, 1 pasang, putih pudar",
+      "brand": "IKEA",
+      "kategori": "Ruang Tamu",
+      "stok": [
+        {
+          "type": "Krem",
+          "qty": 25
+        },
+        {
+          "id": null,
+          "type": "Hitam",
+          "qty": "10"
+        }
+      ],
+      "images": [
+        "https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/251/0025145_PE242082_S4.jpg",
+        "https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/094/0409408_PE569731_S4.jpg",
+        "https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/093/0409334_PE569661_S4.jpg"
+      ],
+      "harga": "149999",
+      "id": 6
+    },
+    {
+      "nama": "Meja MALM",
+      "deskripsi": "Meja dengan panel tarik, putih",
+      "brand": "IKEA",
+      "kategori": "Kantor",
+      "stok": [
+        {
+          "id": null,
+          "type": "Putih",
+          "qty": 20
+        },
+        {
+          "id": null,
+          "type": "Coklat Tua",
+          "qty": 20
+        }
+      ],
+      "images": [
+        "https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/359/0735975_PE740309_S4.jpg",
+        "https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/333/0133380_PE288797_S4.jpg"
+      ],
+      "harga": 2999999,
+      "id": 12
+    },
+    {
+      "nama": "Meja ALEX",
+      "deskripsi": "Meja, putih",
+      "brand": "IKEA",
+      "kategori": "Kantor",
+      "stok": [
+        {
+          "id": null,
+          "type": "Putih",
+          "qty": 20
+        },
+        {
+          "id": null,
+          "type": "Krem",
+          "qty": 5
+        }
+      ],
+      "images": [
+        "https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/422/0242202_PE381724_S4.jpg",
+        "https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/514/0851429_PE573501_S4.jpg",
+        "https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/548/0754800_PE748100_S4.jpg"
+      ],
+      "harga": 1999996,
+      "id": 13
+    },
+    {
+      "nama": "Meja Makan VEDBO",
+      "deskripsi": "Meja dan 4 kursi, putih/kayu birch",
+      "brand": "IKEA",
+      "kategori": "Ruang Makan",
+      "stok": [
+        {
+          "id": null,
+          "type": "Putih",
+          "qty": 30
+        },
+        {
+          "id": null,
+          "type": "Hitam",
+          "qty": 30
+        }
+      ],
+      "images": [
+        "https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/091/0809104_PE770961_S4.jpg",
+        "https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/091/0809102_PE770959_S4.jpg"
+      ],
+      "harga": 18999999,
+      "id": 14
+    },
+    {
+      "nama": "Toples KORKEN",
+      "deskripsi": "Stoples dengan penutup, kaca bening",
+      "brand": "IKEA",
+      "kategori": "Dapur",
+      "stok": [
+        {
+          "id": null,
+          "type": "1 Liter",
+          "qty": 50
+        }
+      ],
+      "images": [
+        "https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/310/0131000_PE285441_S4.jpg",
+        "https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/687/0468760_PE611677_S4.jpg",
+        "https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/855/0685518_PH142873_S4.jpg"
+      ],
+      "harga": 19900,
+      "id": 15
+    },
+    {
+      "nama": "Lampu TERTIAL",
+      "deskripsi": "Lampu kerja",
+      "brand": "IKEA",
+      "kategori": "Kantor",
+      "stok": [
+        {
+          "id": null,
+          "type": "Biru",
+          "qty": 20
+        },
+        {
+          "id": null,
+          "type": "Hitam",
+          "qty": 30
+        },
+        {
+          "id": null,
+          "type": "Putih",
+          "qty": "39"
+        }
+      ],
+      "images": [
+        "https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/489/0748943_PE745342_S4.jpg",
+        "https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/093/0609306_PE684440_S4.jpg",
+        "https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/093/0609308_PE684439_S4.jpg",
+        "https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/876/0487645_PE622662_S4.jpg"
+      ],
+      "harga": "179000",
+      "id": 16
+    }
+  ],
+  "transactions": [
+    {
+      "idUser": 1,
+      "username": "Admin",
+      "totalPayment": 9149996,
+      "statusPaid": "unpaid",
+      "cart": [
+        {
+          "qty": 3,
+          "nama": "Meja MALM",
+          "harga": 2999999,
+          "total": 2999999,
+          "image": "https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/359/0735975_PE740309_S4.jpg",
+          "type": "Coklat Tua"
+        },
+        {
+          "qty": 1,
+          "nama": "Tirai",
+          "harga": "149999",
+          "total": 149999,
+          "image": "https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/251/0025145_PE242082_S4.jpg",
+          "type": "Krem"
+        }
+      ],
+      "date": "04/10/2021",
+      "id": 1
+    },
+    {
+      "idUser": 3,
+      "username": "Upin",
+      "totalPayment": 18999999,
+      "statusPaid": "paid",
+      "cart": [
+        {
+          "qty": 1,
+          "nama": "Meja Makan VEDBO",
+          "harga": 18999999,
+          "total": 18999999,
+          "image": "https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/091/0809104_PE770961_S4.jpg",
+          "type": "Putih"
+        }
+      ],
+      "date": "04/11/2021",
+      "id": 2
+    },
+    {
+      "idUser": 3,
+      "username": "Upin",
+      "totalPayment": 1999996,
+      "statusPaid": "paid",
+      "cart": [
+        {
+          "qty": 1,
+          "nama": "Meja ALEX",
+          "harga": 1999996,
+          "total": 1999996,
+          "image": "https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/422/0242202_PE381724_S4.jpg",
+          "type": "Putih"
+        }
+      ],
+      "date": "04/11/2021",
+      "id": 3
+    }
+  ]
+}

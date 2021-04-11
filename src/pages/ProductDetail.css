@@ -1,0 +1,13 @@
+
+.select-image:hover{
+    cursor: pointer;
+    border-bottom: 3px solid #646186;
+    margin-bottom: 3px;
+    transition: 500;
+}
+
+.append-prepend:hover{
+    cursor: pointer;
+    color: white;
+    background-color: grey;
+}
