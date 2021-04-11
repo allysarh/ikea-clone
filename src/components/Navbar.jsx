@@ -7,6 +7,8 @@ import {
 import { connect } from 'react-redux'
 // action untuk mereset data pada reducer
 import { authLogout } from '../action'
+import axios from 'axios'
+import { URL_API } from '../Helper';
 
 // import { authLogin } from '../action'
 
@@ -17,7 +19,8 @@ class NavbarComp extends React.Component {
             isOpen: false,
             openSearch: false,
             dataSearch: [],
-            qty: 0
+            qty: 0,
+            openCart: false
         }
     }
     getAllQty = () => {
@@ -41,12 +44,47 @@ class NavbarComp extends React.Component {
     printSearch = () => {
         return this.state.dataSearch.map((item, index) => {
             return (
-                <Link to={`/products-detail?id=${index}`} style={{textDecoration: 'none'}}>
+                <Link to={`/products-detail?id=${index}`} style={{ textDecoration: 'none' }}>
                     <DropdownItem>{item.nama}</DropdownItem>
                 </Link>)
         })
     }
 
+    showCart = () => {
+        this.setState({ openCart: !this.state.openCart })
+    }
+
+    // componentDidMount(){
+    //     this.cartMerged()
+    // }
+    // cartMerged = () => {
+    //     let arr = [...this.props.cart]
+    //     let merged = arr.reduce((acc, cur) => {
+    //         let nama = cur.nama
+    //         let type = cur.type
+    //         let found = acc.find((elem) => {
+    //             if (elem.nama === nama && elem.type === type) {
+    //                 return [nama, type]
+    //             }
+    //         });
+    //         if (found) {
+    //             // console.log("found",found)
+    //             found.qty += cur.qty;
+    //         } else {
+    //             acc.push(cur);
+    //         }
+    //         return acc;
+    //     }, []);
+    //     return merged
+    // }
+
+    printShowCart = () =>{
+        return this.props.cart.map((item, index) =>{
+            return(
+                <DropdownItem><img src={item.image} height="20vh"/> {item.nama} x {item.qty}</DropdownItem>
+            )
+        })
+    }
     render() {
         return (
             <div className="container-fluid" style={{ fontSize: '11px' }}>
@@ -187,14 +225,31 @@ class NavbarComp extends React.Component {
                             </UncontrolledDropdown>
                         }
 
-                        <Link to="/shopping-cart" style={{ color: 'black' }}>
-                            <div className="d-flex">
-                                <span className="material-icons m-1">
-                                    shopping_cart
+                        <div className="d-flex" >
+                            <span className="material-icons m-1">
+                                shopping_cart
+                                    </span>
+                            <h5>
+                                {/* <Badge color="warning" className="m-auto">
+                                </Badge> */}
+                                <Dropdown isOpen={this.state.openCart} toggle={this.showCart}>
+                                    <DropdownToggle color="warning" className="m-auto" size="sm" >
+                                        {this.getAllQty()}
+                                    </DropdownToggle>
+                                    <DropdownMenu right>
+                                        {this.printShowCart()}
+                                    </DropdownMenu>
+                                </Dropdown>
+                            </h5>
+                        </div>
+
+
+                        {/* <div className="d-flex" onClick={this.showCart}>
+                            <span className="material-icons m-1">
+                                shopping_cart
                                 </span>
-                                <h5><Badge color="warning" className="m-auto">{this.getAllQty()}</Badge></h5>
-                            </div>
-                        </Link>
+                            <h5><Badge color="warning" className="m-auto">{this.getAllQty()}</Badge></h5>
+                        </div> */}
                     </Collapse>
                 </Navbar>
             </div>

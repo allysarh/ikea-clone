@@ -46,7 +46,16 @@
       "email": "upin@mail.com",
       "password": "1234",
       "role": "user",
-      "cart": [],
+      "cart": [
+        {
+          "qty": 2,
+          "nama": "Meja ALEX",
+          "harga": 1999996,
+          "total": 1999996,
+          "image": "https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/422/0242202_PE381724_S4.jpg",
+          "type": "Putih"
+        }
+      ],
       "id": 3
     },
     {

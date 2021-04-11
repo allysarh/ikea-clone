@@ -90,11 +90,30 @@ class ProductDetail extends React.Component {
                 type: type
             })
 
+            let arr = [...this.props.cart]
+            let merged = arr.reduce((acc, cur) => {
+                let nama = cur.nama
+                let type = cur.type
+                let found = acc.find((elem) => {
+                    if (elem.nama === nama && elem.type === type) {
+                        return [nama, type]
+                    }
+                });
+                if (found) {
+                    // console.log("found",found)
+                    found.qty += cur.qty;
+                } else {
+                    acc.push(cur);
+                }
+                return acc;
+            }, []);
+
             axios.patch(URL_API + `/users/${this.props.id}`, {
-                cart: this.props.cart
+                cart: merged
             })
                 .then((res) => {
                     console.log("hasil patch:", res.data)
+                    this.props.updateCart([...merged])
                     this.props.getProductAction()
                 })
 
@@ -149,7 +168,7 @@ class ProductDetail extends React.Component {
                                             }
                                         </Collapse>
                                     </div>
-    
+
                                     <div>
                                     </div>
                                     <div className="d-flex justify-content-between align-items-center">
@@ -194,7 +213,7 @@ class ProductDetail extends React.Component {
         } else {
             return null
         }
-    } 
+    }
 }
 
 const mapStateToProps = ({ authReducer }) => {

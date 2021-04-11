@@ -18,39 +18,39 @@ class ShoppingCartPage extends React.Component {
     }
     componentDidMount() {
         this.props.getProductAction()
-        this.cartMerged()
+        // this.cartMerged()
     }
-    cartMerged = () => {
-        let arr = [...this.props.cart]
-        let merged = arr.reduce((acc, cur) => {
-            let nama = cur.nama
-            let type = cur.type
-            let found = acc.find((elem) => {
-                if (elem.nama === nama && elem.type === type) {
-                    return [nama, type]
-                }
-            });
-            if (found) {
-                // console.log("found",found)
-                found.qty += cur.qty;
-            } else {
-                acc.push(cur);
-            }
-            return acc;
-        }, []);
+    // cartMerged = () => {
+    //     let arr = [...this.props.cart]
+    //     let merged = arr.reduce((acc, cur) => {
+    //         let nama = cur.nama
+    //         let type = cur.type
+    //         let found = acc.find((elem) => {
+    //             if (elem.nama === nama && elem.type === type) {
+    //                 return [nama, type]
+    //             }
+    //         });
+    //         if (found) {
+    //             // console.log("found",found)
+    //             found.qty += cur.qty;
+    //         } else {
+    //             acc.push(cur);
+    //         }
+    //         return acc;
+    //     }, []);
 
-        axios.patch(URL_API + `/users/${this.props.id}`, {
-            cart: merged
-        }).then((res) => {
-            console.log("hasil patch:", res.data)
-            //update di reducer
-            this.props.updateCart([...merged])
-        })
+    //     axios.patch(URL_API + `/users/${this.props.id}`, {
+    //         cart: merged
+    //     }).then((res) => {
+    //         console.log("hasil patch:", res.data)
+    //         //update di reducer
+    //         this.props.updateCart([...merged])
+    //     })
 
-        this.props.getProductAction()
-        console.log("merged", merged)
-        return merged
-    }
+    //     this.props.getProductAction()
+    //     console.log("merged", merged)
+    //     return merged
+    // }
 
     onBtnIncrement = (index) => {
         this.props.cart[index].qty++
