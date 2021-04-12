@@ -44,7 +44,7 @@ class NavbarComp extends React.Component {
     printSearch = () => {
         return this.state.dataSearch.map((item, index) => {
             return (
-                <Link to={`/products-detail?id=${index}`} style={{ textDecoration: 'none' }}>
+                <Link to={`/products-detail?nama=${item.nama}`} style={{ textDecoration: 'none' }}>
                     <DropdownItem>{item.nama}</DropdownItem>
                 </Link>)
         })

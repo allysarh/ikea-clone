@@ -20,7 +20,8 @@ class LandingPage extends React.Component {
                     deskripsi={item.deskripsi}
                     harga={item.harga}
                     images={item.images[0]}
-                    iitem={item} />
+                    item={item}
+                    id={item.id} />
             })
 
         } else {

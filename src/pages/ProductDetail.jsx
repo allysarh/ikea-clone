@@ -89,7 +89,7 @@ class ProductDetail extends React.Component {
                 image: image,
                 type: type
             })
-
+            
             let arr = [...this.props.cart]
             let merged = arr.reduce((acc, cur) => {
                 let nama = cur.nama
@@ -113,7 +113,6 @@ class ProductDetail extends React.Component {
             })
                 .then((res) => {
                     console.log("hasil patch:", res.data)
-                    this.props.updateCart([...merged])
                     this.props.getProductAction()
                 })
 
@@ -127,92 +126,92 @@ class ProductDetail extends React.Component {
     }
     render() {
         // console.log(this.state.output)
-        if (this.state.detail) {
-            return (
-                <div className="row p-5">
-                    {
-                        this.state.detail.id ?
-                            <>
-                                <div className="col-md-1">
-                                    {this.renderImages()}
-                                </div>
-                                <div className="col-md-7">
-                                    <img src={this.state.detail.images[this.state.thumbnail]} width="100%" />
-                                </div>
-                                <div className="col-md-4">
-                                    <div style={{ borderBottom: '1px solid grey' }}>
-                                        <h4 style={{ fontWeight: 'bolder' }}>{this.state.detail.nama}</h4>
-                                        <h6 className="text-mute">{this.state.detail.kategori}</h6>
-                                        <h2>Rp. {this.state.detail.harga.toLocaleString()}</h2>
-                                        <p>Batas pembelian 10pcs</p>
-                                    </div>
-                                    <div style={{ borderBottom: '1px solid grey', cursor: 'pointer' }}>
-                                        <span className="d-flex justify-content-between m-1" onClick={() => this.setState({ openType: !this.state.openType })}>
-                                            <h6>Type : {this.state.typeCO}</h6>
-                                            <span class="material-icons" >
-                                                expand_more
-                                            </span>
-                                        </span>
-                                        <Collapse isOpen={this.state.openType}>
-                                            {
-                                                this.state.detail.stok.map((item, index) => {
-                                                    return (
-                                                        <div>
-                                                            <Button outline color="secondary" size="sm" style={{ width: '100%', border: 'none', textAlign: 'left' }}
-                                                                onClick={() => this.setState({ typeCO: item.type, selectedType: item, output: 1 })}>
-                                                                {item.type} : {item.qty}
-                                                            </Button>
-                                                        </div>
-                                                    )
-                                                })
-                                            }
-                                        </Collapse>
-                                    </div>
+        // if (this.state.detail) {
 
-                                    <div>
-                                    </div>
-                                    <div className="d-flex justify-content-between align-items-center">
-                                        <span> Jumlah: </span>
-                                        <span className="d-flex align-items-right justify-content-center m-3">
-                                            <InputGroup>
-                                                <InputGroupAddon addonType="prepend" className="border append-prepend">
-                                                    <span class="material-icons" onClick={this.onBtnDecrement}>
-                                                        remove
-                                                    </span>
-                                                </InputGroupAddon>
-                                                <Input size="sm" placeholder="qty" style={{ textAlign: 'center' }} value={this.state.output} innerRef={el => this.inputQty = el} />
-                                                <InputGroupAddon addonType="append" className="append-prepend">
-                                                    <span className="material-icons border" onClick={this.onBtnIncrement}>
-                                                        add
-                                                    </span>
-                                                </InputGroupAddon>
-                                            </InputGroup>
-                                        </span>
-                                    </div>
-                                    <div>
-                                        <Button color="warning" style={{ width: '100%' }} className="d-flex align-items-center justify-content-center m-3"
-                                            onClick={this.onBtnAddToCart}>
-                                            <h6>Tambahkan ke Keranjang </h6>
-                                            <span className="material-icons m-1">
-                                                shopping_cart
-                                            </span>
-                                        </Button>
-                                        <Button outline color="secondary" style={{ width: '100%' }} className="d-flex align-items-center justify-content-center m-3">
-                                            <h6 className="mt-1">Tambahkan ke favorit </h6>
-                                            <span className="material-icons m-1">
-                                                favorite
-                                            </span>
-                                        </Button>
-                                    </div>
+        // }
+        let { kategori, nama, harga } = this.state.detail
+        return (
+            <div className="row p-5">
+                {
+                    this.state.detail.id ?
+                        <>
+                            <div className="col-md-1">
+                                {this.renderImages()}
+                            </div>
+                            <div className="col-md-7">
+                                <img src={this.state.detail.images[this.state.thumbnail]} width="100%" />
+                            </div>
+                            <div className="col-md-4">
+                                <div style={{ borderBottom: '1px solid grey' }}>
+                                    <h4 style={{ fontWeight: 'bolder' }}>{this.state.detail.nama}</h4>
+                                    <h6 className="text-mute">{this.state.detail.kategori}</h6>
+                                    <h2>Rp. {harga.toLocaleString()}</h2>
+                                    <p>Batas pembelian 10pcs</p>
                                 </div>
-                            </> :
-                            <h3 style={{ textAlign: 'center' }}>Detail Produk Not Found!</h3>
-                    }
-                </div>
-            );
-        } else {
-            return null
-        }
+                                <div style={{ borderBottom: '1px solid grey', cursor: 'pointer' }}>
+                                    <span className="d-flex justify-content-between m-1" onClick={() => this.setState({ openType: !this.state.openType })}>
+                                        <h6>Type : {this.state.typeCO}</h6>
+                                        <span class="material-icons" >
+                                            expand_more
+                                        </span>
+                                    </span>
+                                    <Collapse isOpen={this.state.openType}>
+                                        {
+                                            this.state.detail.stok.map((item, index) => {
+                                                return (
+                                                    <div>
+                                                        <Button outline color="secondary" size="sm" style={{ width: '100%', border: 'none', textAlign: 'left' }}
+                                                            onClick={() => this.setState({ typeCO: item.type, selectedType: item, output: 1 })}>
+                                                            {item.type} : {item.qty}
+                                                        </Button>
+                                                    </div>
+                                                )
+                                            })
+                                        }
+                                    </Collapse>
+                                </div>
+
+                                <div>
+                                </div>
+                                <div className="d-flex justify-content-between align-items-center">
+                                    <span> Jumlah: </span>
+                                    <span className="d-flex align-items-right justify-content-center m-3">
+                                        <InputGroup>
+                                            <InputGroupAddon addonType="prepend" className="border append-prepend">
+                                                <span class="material-icons" onClick={this.onBtnDecrement}>
+                                                    remove
+                                                </span>
+                                            </InputGroupAddon>
+                                            <Input size="sm" placeholder="qty" style={{ textAlign: 'center' }} value={this.state.output} innerRef={el => this.inputQty = el} />
+                                            <InputGroupAddon addonType="append" className="append-prepend">
+                                                <span className="material-icons border" onClick={this.onBtnIncrement}>
+                                                    add
+                                                </span>
+                                            </InputGroupAddon>
+                                        </InputGroup>
+                                    </span>
+                                </div>
+                                <div>
+                                    <Button color="warning" style={{ width: '100%' }} className="d-flex align-items-center justify-content-center m-3"
+                                        onClick={this.onBtnAddToCart}>
+                                        <h6>Tambahkan ke Keranjang </h6>
+                                        <span className="material-icons m-1">
+                                            shopping_cart
+                                        </span>
+                                    </Button>
+                                    <Button outline color="secondary" style={{ width: '100%' }} className="d-flex align-items-center justify-content-center m-3">
+                                        <h6 className="mt-1">Tambahkan ke favorit </h6>
+                                        <span className="material-icons m-1">
+                                            favorite
+                                        </span>
+                                    </Button>
+                                </div>
+                            </div>
+                        </> :
+                        <h3 style={{ textAlign: 'center' }}>Detail Produk Not Found!</h3>
+                }
+            </div>
+        );
     }
 }
 

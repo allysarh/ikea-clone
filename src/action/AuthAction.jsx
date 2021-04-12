@@ -16,6 +16,10 @@ export const authLogin = (email, password) => {
                     payload: res.data[0]
                 })
             })
+            .catch((err) =>{
+                console.log("error login", err)
+                alert("email belum terdaftar")
+            })
     }
 
 }
@@ -28,6 +32,7 @@ export const authLogin = (email, password) => {
 //         payload: data
 //     }
 // }
+
 // menghapus data untuk logout
 export const authLogout = () => {
     localStorage.removeItem("tkn_id")

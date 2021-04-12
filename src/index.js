@@ -18,6 +18,7 @@ const globalStore = createStore(Reducers, {}, composeWithDevTools(applyMiddlewar
 ReactDOM.render(
 
   <Provider store={globalStore}>
+    {/* 1. config dari react router-dom */}
     <BrowserRouter>
       <App />
     </BrowserRouter>

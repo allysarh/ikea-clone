@@ -16,6 +16,9 @@ class ProductsPage extends React.Component {
         }
     }
 
+    componentDidMount(){
+        this.props.getProductAction()
+    }
     printProduk = () => {
         // if (this.state.data.length > 0) {
         return this.props.products.map((item, index) => {

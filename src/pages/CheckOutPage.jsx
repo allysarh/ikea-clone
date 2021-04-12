@@ -72,7 +72,7 @@ class CheckOutPage extends React.Component {
     }
 
     getAllPrice = () => {
-        let totalAll = this.state.dataTransaction.map((item, index) => {
+        let totalAll = this.state.dataTransaction.filter(e => e.statusPaid === "unpaid").map((item, index) => {
             return item.totalPayment
         })
         return totalAll.reduce((a, b) => (a + b), 0)
@@ -89,23 +89,19 @@ class CheckOutPage extends React.Component {
         
         // console.log(statusPaidChanged)
         // console.log("id", this.state.dataTransaction[0].id)
+        
         let dataUnpaid = this.state.dataTransaction.filter(e => e.statusPaid === "unpaid")
+        let totalPayment = Math.round(this.getAllPrice() * 110 / 100)
+        console.log("total",totalPayment)
+        
         axios.patch(URL_API + `/transactions/${dataUnpaid[0].id}`, {
-            statusPaid: "paid"
+            statusPaid: "paid", totalPayment: totalPayment
         })
             .then((res) => {
                 console.log("respon patch status", res.data)
+                this.getDataTransaction()
             })
             .catch((err) => console.log("get respon patch bayar error", err))
-        // axios.patch(URL_API + `/transactions/?idUser=${this.props.id}`, statusPaidChanged)
-        //     .then((res) => {
-        //         console.log("respon patch status", res.data)
-        //     })
-        //     .catch((err) => console.log("get respon patch bayar error", err))
-
-        // axios.delete(URL_API + `/transactions/${this.props.id}`)
-        // .then(res =>console.log(res.data))
-        // .catch((err) => console.log(err))
         this.setState({redirectHistory: !this.state.redirectHistory})
 
     }

@@ -21,6 +21,17 @@ class LoginPage extends React.Component {
             verifEmail: false
         }
     }
+    handlePassword = (value) =>{
+        console.log(this.inRegisPassword.value)
+        let huruf = /[a-zA-Z]/
+        let number =/[0-9]/
+        if(huruf.test(this.inRegisPassword.value) && !number.test(this.inRegisPassword.value)){
+            console.log("hanya huruf")
+        } else if(huruf.test(this.inRegisPassword.value) && number.test(this.inRegisPassword.value)){
+            console.log("huruf dan angka")
+        }
+        console.log(huruf.test(this.inRegisPassword.value))
+    }
 
     // Membuat fungsi untuk register data /push
     onBtnRegis = () => {
@@ -47,7 +58,9 @@ class LoginPage extends React.Component {
 
 
         } else {
+            // mengecek fromat email
             if (email.includes('@')) {
+                // mengecek email apakah sudah terdaftar atau belum
                 Axios.get(URL_API + `/users?email=${this.inRegisEmail.value}`)
                     .then((res) => {
                         console.log("test", res.data[0])
@@ -58,19 +71,27 @@ class LoginPage extends React.Component {
                                 alertType: 'warning'
                             }))
                         } else {
-                            Axios.post(URL_API + `/users`, {
-                                username, email, password, role, cart
-                            }).then(res => {
+                            if(password.match(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\w\s]).{8,}$/)){
+                                Axios.post(URL_API + `/users`, {
+                                    username, email, password, role, cart
+                                }).then(res => {
+                                    this.setState((state, props) => ({
+                                        alert: !this.state.alert,
+                                        message: 'Registrasi akun sukses✔. Silahkan login',
+                                        alertType: 'success'
+                                    }))
+                                    console.log(res.data)
+    
+                                }).catch((err) => {
+                                    console.log(err)
+                                })
+                            } else {
                                 this.setState((state, props) => ({
                                     alert: !this.state.alert,
-                                    message: 'Registrasi akun sukses✔. Silahkan login',
-                                    alertType: 'success'
+                                    message: 'password terlalu lemah, masukkan password baru!',
+                                    alertType: 'warning'
                                 }))
-                                console.log(res.data)
-
-                            }).catch((err) => {
-                                console.log(err)
-                            })
+                            }
                         }
                     })
                     .catch((err) => console.log(err))
@@ -91,8 +112,6 @@ class LoginPage extends React.Component {
         // mengatur waktu time out 
         setTimeout(() => this.setState({ alert: !this.state.alert }), 3000)
     }
-
-    //Cek email di database
 
     onBtnPass = () => {
         this.setState({ passType: !this.state.passType })
@@ -120,6 +139,7 @@ class LoginPage extends React.Component {
         //         console.log("login error", err)
         //     })
         this.props.authLogin(this.inEmail.value, this.inPassword.value)
+
     }
 
     //CARA REDIRECT1: redirect dengan cdu 
@@ -130,6 +150,9 @@ class LoginPage extends React.Component {
     // }
     // INI GBS HARUS SETSTATE AJ YG DIUPDATENYAA
 
+    // PASSWORD REGEX
+
+    
     render() {
         // normal
         // if (this.state.redirect) {
@@ -226,7 +249,7 @@ class LoginPage extends React.Component {
                                 <InputGroup>
                                     <Input type={
                                         this.state.passType ? 'password' : 'type'
-                                    } placeholder="Masukkan kata sandi Anda.." innerRef={elemen => this.inRegisPassword = elemen} />
+                                    } onChange={this.handlePassword} placeholder="Masukkan kata sandi Anda.." innerRef={elemen => this.inRegisPassword = elemen} />
                                     <InputGroupAddon addonType="append">
                                         <InputGroupText className="btn btn-outline-secondary " onClick={this.onBtnPass}>
                                             {

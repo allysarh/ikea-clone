@@ -18,6 +18,7 @@ class ShoppingCartPage extends React.Component {
     }
     componentDidMount() {
         this.props.getProductAction()
+        // this.productDecrement()
         // this.cartMerged()
     }
     // cartMerged = () => {
@@ -165,6 +166,32 @@ class ShoppingCartPage extends React.Component {
         // console.log(this.props.cart.qty)
         //mengurangi qty produk dulu (patch)
         //idUser,, username , date, totalPayment, status(paid/unpaid), cart
+        console.log(this.props.cart)
+        console.log(this.props.product)
+
+        this.props.cart.forEach((item, index) =>{
+            this.props.product.forEach((value, idx) =>{
+                if(item.nama === value.nama){
+                    console.log(item.nama, value.nama)
+                    console.log(value.stok, item.type)
+                    let idxStok = value.stok.findIndex(val =>{
+                        return val.type === item.type
+                    })
+                    // console.log(idxStok+1)
+                    // console.log("itemqty",item.qty)
+                    // console.log("befor", value.stok[idxStok+1].qty)
+                    // value.stok[idxStok+1].qty -= item.qty
+                    // console.log("after",value.stok[idxStok+1].qty)
+                    // console.log(value.stok)
+                    axios.patch(URL_API + `/products/${value.id}`, {
+                        stok: value.stok
+                    })
+                    .then((res) =>{
+                        console.log(res.data)
+                    }).catch(err => console.log(err))
+                }
+            })
+        })
         let idUser = this.props.id
         let username = this.props.username
         let totalPayment = this.getAllPrice()
@@ -180,8 +207,9 @@ class ShoppingCartPage extends React.Component {
         let cartReset = []
 
         console.table([{ idUser, username, totalPayment, statusPaid, cart, date }])
-
+        
         if (cart.length > 0) {
+            ///post data ke database transaksi
             axios.post(URL_API + `/transactions`, {
                 idUser, username, totalPayment, statusPaid, cart, date
             })
@@ -192,7 +220,9 @@ class ShoppingCartPage extends React.Component {
                     this.setState({ redirectCO: !this.state.redirectCO })
                 })
                 .catch((err) => console.log(err))
-            // this.resetCart()
+            
+                //post hapus data di database produk
+                
         } else {
             alert("anda belum memilih barang!")
         }
@@ -203,6 +233,9 @@ class ShoppingCartPage extends React.Component {
 
         //axios post ke table user transaction
         //data user transaction ditampilkan history page user, transaction page admin
+
+        //patch data di database produk
+        
     }
     render() {
         if (this.state.redirectCO) {
@@ -216,7 +249,7 @@ class ShoppingCartPage extends React.Component {
                             Rp. {this.getAllPrice().toLocaleString()}
                         </span>
                     </p>
-
+                    {/* {this.productDecrement()} */}
                     <div>
                         <Table hover style={{ borderTop: 'none' }}>
                             <thead style={{ textAlign: 'center' }}>

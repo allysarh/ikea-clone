@@ -46,16 +46,7 @@
       "email": "upin@mail.com",
       "password": "1234",
       "role": "user",
-      "cart": [
-        {
-          "qty": 2,
-          "nama": "Meja ALEX",
-          "harga": 1999996,
-          "total": 1999996,
-          "image": "https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/422/0242202_PE381724_S4.jpg",
-          "type": "Putih"
-        }
-      ],
+      "cart": [],
       "id": 3
     },
     {
@@ -128,6 +119,14 @@
       "password": "1234",
       "role": "user",
       "cart": []
+    },
+    {
+      "username": "jungjaehyun_",
+      "email": "jahyun@mail.com",
+      "password": "Fivestarstudio5@",
+      "role": "user",
+      "cart": [],
+      "id": 12
     }
   ],
   "products": [
@@ -138,13 +137,9 @@
       "kategori": "Ruang Tamu",
       "stok": [
         {
-          "type": "Krem",
-          "qty": 25
-        },
-        {
           "id": null,
           "type": "Hitam",
-          "qty": "10"
+          "qty": 10
         }
       ],
       "images": [
@@ -210,11 +205,6 @@
       "brand": "IKEA",
       "kategori": "Ruang Makan",
       "stok": [
-        {
-          "id": null,
-          "type": "Putih",
-          "qty": 30
-        },
         {
           "id": null,
           "type": "Hitam",
@@ -310,20 +300,74 @@
     {
       "idUser": 3,
       "username": "Upin",
-      "totalPayment": 18999999,
+      "totalPayment": 19900,
       "statusPaid": "paid",
       "cart": [
         {
           "qty": 1,
-          "nama": "Meja Makan VEDBO",
-          "harga": 18999999,
-          "total": 18999999,
-          "image": "https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/091/0809104_PE770961_S4.jpg",
-          "type": "Putih"
+          "nama": "Toples KORKEN",
+          "harga": 19900,
+          "total": 19900,
+          "image": "https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/310/0131000_PE285441_S4.jpg",
+          "type": "1 Liter"
         }
       ],
       "date": "04/11/2021",
       "id": 2
+    },
+    {
+      "idUser": 3,
+      "username": "Upin",
+      "totalPayment": 19900,
+      "statusPaid": "paid",
+      "cart": [
+        {
+          "qty": 1,
+          "nama": "Toples KORKEN",
+          "harga": 19900,
+          "total": 19900,
+          "image": "https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/310/0131000_PE285441_S4.jpg",
+          "type": "1 Liter"
+        }
+      ],
+      "date": "04/11/2021",
+      "id": 3
+    },
+    {
+      "idUser": 3,
+      "username": "Upin",
+      "totalPayment": 2999999,
+      "statusPaid": "paid",
+      "cart": [
+        {
+          "qty": 1,
+          "nama": "Meja MALM",
+          "harga": 2999999,
+          "total": 2999999,
+          "image": "https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/359/0735975_PE740309_S4.jpg",
+          "type": "Putih"
+        }
+      ],
+      "date": "04/11/2021",
+      "id": 4
+    },
+    {
+      "idUser": 3,
+      "username": "Upin",
+      "totalPayment": 179000,
+      "statusPaid": "paid",
+      "cart": [
+        {
+          "qty": 1,
+          "nama": "Lampu TERTIAL",
+          "harga": "179000",
+          "total": 179000,
+          "image": "https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/489/0748943_PE745342_S4.jpg",
+          "type": "Biru"
+        }
+      ],
+      "date": "04/11/2021",
+      "id": 5
     },
     {
       "idUser": 3,
@@ -341,7 +385,69 @@
         }
       ],
       "date": "04/11/2021",
-      "id": 3
+      "id": 6
+    },
+    {
+      "idUser": 3,
+      "username": "Upin",
+      "totalPayment": 18999999,
+      "statusPaid": "paid",
+      "cart": [
+        {
+          "qty": 1,
+          "nama": "Meja Makan VEDBO",
+          "harga": 18999999,
+          "total": 18999999,
+          "image": "https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/091/0809104_PE770961_S4.jpg",
+          "type": "Putih"
+        }
+      ],
+      "date": "04/11/2021",
+      "id": 7
+    },
+    {
+      "idUser": 3,
+      "username": "Upin",
+      "totalPayment": 164999,
+      "statusPaid": "paid",
+      "cart": [
+        {
+          "qty": 1,
+          "nama": "Tirai",
+          "harga": "149999",
+          "total": 149999,
+          "image": "https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/251/0025145_PE242082_S4.jpg",
+          "type": "Hitam"
+        }
+      ],
+      "date": "04/11/2021",
+      "id": 8
+    },
+    {
+      "idUser": 3,
+      "username": "Upin",
+      "totalPayment": 21064998,
+      "statusPaid": "paid",
+      "cart": [
+        {
+          "qty": 1,
+          "nama": "Tirai",
+          "harga": "149999",
+          "total": 149999,
+          "image": "https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/251/0025145_PE242082_S4.jpg",
+          "type": "Krem"
+        },
+        {
+          "qty": 1,
+          "nama": "Meja Makan VEDBO",
+          "harga": 18999999,
+          "total": 18999999,
+          "image": "https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/091/0809104_PE770961_S4.jpg",
+          "type": "Putih"
+        }
+      ],
+      "date": "04/12/2021",
+      "id": 9
     }
   ]
 }
