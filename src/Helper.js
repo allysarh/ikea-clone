@@ -1,4 +1,4 @@
-export const URL_API = "http://localhost:2022"
+export const URL_API = "http://localhost:2025"
 
 //TUGAS UNTUK HARI INI
 

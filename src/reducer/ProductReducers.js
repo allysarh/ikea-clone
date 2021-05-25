@@ -8,7 +8,7 @@ export const ProductReducers = (state = INITIAL_STATE, action) => {
     // console.log("reducer", action.payload)
     switch(action.type){
         case GET_PRODUCT:
-            console.log("product reducer", action.payload)
+            // console.log("product reducer", action.payload)
             // tanpa split operator: {products_list: state,}
             return {...state, products_list: action.payload }
         case UPDATE_PRODUCTS:

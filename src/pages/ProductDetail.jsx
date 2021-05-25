@@ -27,7 +27,9 @@ class ProductDetail extends React.Component {
     getProductDetail = () => {
         //mendapatkan query ID
         console.log("location", this.props.location)
-        axios.get(URL_API + `/products${this.props.location.search}`)
+        let idProduk = this.props.location.search.split("=")[1]
+        console.log(idProduk)
+        axios.get(URL_API + `/products/read?idProduk=${idProduk}`)
             .then(res => {
                 console.log("data detail", res.data)
                 this.setState({ detail: res.data[0] })
@@ -129,11 +131,11 @@ class ProductDetail extends React.Component {
         // if (this.state.detail) {
 
         // }
-        let { kategori, nama, harga } = this.state.detail
+        // let { brand, nama, harga } = this.state.detail
         return (
             <div className="row p-5">
                 {
-                    this.state.detail.id ?
+                    this.state.detail.idProduk ?
                         <>
                             <div className="col-md-1">
                                 {this.renderImages()}
@@ -144,8 +146,8 @@ class ProductDetail extends React.Component {
                             <div className="col-md-4">
                                 <div style={{ borderBottom: '1px solid grey' }}>
                                     <h4 style={{ fontWeight: 'bolder' }}>{this.state.detail.nama}</h4>
-                                    <h6 className="text-mute">{this.state.detail.kategori}</h6>
-                                    <h2>Rp. {harga.toLocaleString()}</h2>
+                                    <h6 className="text-mute">{this.state.detail.brand}</h6>
+                                    <h2>Rp. {this.state.detail.harga.toLocaleString()}</h2>
                                     <p>Batas pembelian 10pcs</p>
                                 </div>
                                 <div style={{ borderBottom: '1px solid grey', cursor: 'pointer' }}>
@@ -218,7 +220,7 @@ class ProductDetail extends React.Component {
 const mapStateToProps = ({ authReducer }) => {
     return {
         cart: authReducer.cart,
-        id: authReducer.id
+        id: authReducer.id,
     }
 }
 

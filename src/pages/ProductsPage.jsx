@@ -28,7 +28,7 @@ class ProductsPage extends React.Component {
                 harga={item.harga}
                 images={item.images[0]}
                 iitem={item}
-                id={item.id}
+                id={item.idProduk}
                 index={index}/>
         })
 

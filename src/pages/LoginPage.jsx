@@ -14,20 +14,21 @@ class LoginPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            passType: 'true',
+            passType: true,
             alert: false,
             message: '',
             alertType: '',
-            verifEmail: false
+            verifEmail: false,
+            confPass: true
         }
     }
-    handlePassword = (value) =>{
+    handlePassword = (value) => {
         console.log(this.inRegisPassword.value)
         let huruf = /[a-zA-Z]/
-        let number =/[0-9]/
-        if(huruf.test(this.inRegisPassword.value) && !number.test(this.inRegisPassword.value)){
+        let number = /[0-9]/
+        if (huruf.test(this.inRegisPassword.value) && !number.test(this.inRegisPassword.value)) {
             console.log("hanya huruf")
-        } else if(huruf.test(this.inRegisPassword.value) && number.test(this.inRegisPassword.value)){
+        } else if (huruf.test(this.inRegisPassword.value) && number.test(this.inRegisPassword.value)) {
             console.log("huruf dan angka")
         }
         console.log(huruf.test(this.inRegisPassword.value))
@@ -40,7 +41,7 @@ class LoginPage extends React.Component {
         let password = this.inRegisPassword.value
         let confPass = this.inConfirmPass.value
         let role = 'user'
-        let cart =[]
+        let cart = []
 
         console.log(username, email, password, confPass)
         // Mengecek apakah email sudah terdaftar atau belum
@@ -61,7 +62,7 @@ class LoginPage extends React.Component {
             // mengecek fromat email
             if (email.includes('@')) {
                 // mengecek email apakah sudah terdaftar atau belum
-                Axios.get(URL_API + `/users?email=${this.inRegisEmail.value}`)
+                Axios.get(URL_API + `/users/get-all?email=${this.inRegisEmail.value}`)
                     .then((res) => {
                         console.log("test", res.data[0])
                         if (res.data.length > 0) {
@@ -71,8 +72,8 @@ class LoginPage extends React.Component {
                                 alertType: 'warning'
                             }))
                         } else {
-                            if(password.match(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\w\s]).{8,}$/)){
-                                Axios.post(URL_API + `/users`, {
+                            if (password.match(/[a-z]/ig) && password.match(/[0-9]/ig)) {
+                                Axios.post(URL_API + `/users/register`, {
                                     username, email, password, role, cart
                                 }).then(res => {
                                     this.setState((state, props) => ({
@@ -81,7 +82,7 @@ class LoginPage extends React.Component {
                                         alertType: 'success'
                                     }))
                                     console.log(res.data)
-    
+
                                 }).catch((err) => {
                                     console.log(err)
                                 })
@@ -152,13 +153,13 @@ class LoginPage extends React.Component {
 
     // PASSWORD REGEX
 
-    
+
     render() {
         // normal
         // if (this.state.redirect) {
         //     return <Redirect to="/" />
         // }
-        if(this.props.id){
+        if (this.props.id) {
             return <Redirect to="/" />
         }
         return (
@@ -268,12 +269,18 @@ class LoginPage extends React.Component {
                             <FormGroup>
                                 <Label for="email">Konfirmasi Kata Sandi</Label>
                                 <InputGroup>
-                                    <Input type={this.state.passType} placeholder="Masukkan kata sandi Anda.." innerRef={elemen => this.inConfirmPass = elemen} />
+                                    <Input type={this.state.confPass} placeholder="Masukkan kata sandi Anda.." innerRef={elemen => this.inConfirmPass = elemen} />
                                     <InputGroupAddon addonType="append">
-                                        <InputGroupText className="btn btn-outline-secondary ">
-                                            <span className="material-icons">
-                                                visibility_off
-                                            </span>
+                                        <InputGroupText className="btn btn-outline-secondary " onClick={this.onBtnPass}>
+                                            {
+                                                this.state.confPass ?
+                                                    <span className="material-icons">
+                                                        visibility_off
+                                                    </span> :
+                                                    <span className="material-icons">
+                                                        visibility
+                                                    </span>
+                                            }
                                         </InputGroupText>
                                     </InputGroupAddon>
                                 </InputGroup>
@@ -291,7 +298,7 @@ class LoginPage extends React.Component {
     }
 }
 
-const mapStateToProps = ({ authReducer}) =>{
+const mapStateToProps = ({ authReducer }) => {
     return {
         id: authReducer.id
     }

@@ -24,13 +24,14 @@ class ModalComp extends React.Component {
         let nama = this.inNamaProduk.value
         let deskripsi = this.inDeskripsi.value
         let brand = this.inBrand.value
-        let kategori = this.inKategori.value
+        // let kategori = this.inKategori.value
+        let idstatus = 1
         let stok = this.state.stok
         let images = this.state.images
         let harga = parseInt(this.inHarga.value)
 
         // console.log(nama, deskripsi, brand, kategori, stok, images, harga)
-        axios.post(URL_API + `/products`, { nama, deskripsi, brand, kategori, stok, images, harga })
+        axios.post(URL_API + `/products/add`, { nama, deskripsi, brand, stok, idstatus, images, harga })
             .then((res) => {
                 console.log(res.data)
                 this.props.getProductAction()

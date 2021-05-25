@@ -78,10 +78,10 @@ class NavbarComp extends React.Component {
     //     return merged
     // }
 
-    printShowCart = () =>{
-        return this.props.cart.map((item, index) =>{
-            return(
-                <DropdownItem><img src={item.image} height="20vh"/> {item.nama} x {item.qty}</DropdownItem>
+    printShowCart = () => {
+        return this.props.cart.map((item, index) => {
+            return (
+                <DropdownItem><img src={item.image} height="20vh" /> {item.nama} x {item.qty}</DropdownItem>
             )
         })
     }
@@ -233,12 +233,18 @@ class NavbarComp extends React.Component {
                                 {/* <Badge color="warning" className="m-auto">
                                 </Badge> */}
                                 <Dropdown isOpen={this.state.openCart} toggle={this.showCart}>
-                                    <DropdownToggle color="warning" className="m-auto" size="sm" >
-                                        {this.getAllQty()}
-                                    </DropdownToggle>
-                                    <DropdownMenu right>
-                                        {this.printShowCart()}
-                                    </DropdownMenu>
+                                    {
+                                        this.props.username &&
+                                        <>
+                                            <DropdownToggle color="warning" className="m-auto" size="sm" >
+                                                {this.getAllQty()}
+                                            </DropdownToggle>
+                                            <DropdownMenu right>
+                                                {this.printShowCart()}
+                                            </DropdownMenu>
+                                        </>
+
+                                    }
                                 </Dropdown>
                             </h5>
                         </div>

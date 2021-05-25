@@ -5,10 +5,33 @@ import { LOGIN_SUCCESS, UPDATE_CART } from "./type"
 // menyimpan data untuk login
 
 // versi redux thunk
-export const authLogin = (email, password) => {
+// export const authLogin = (email, password) => {
+//     return (dispatch) => {
+//         axios.get(URL_API + `/users?email=${email}&password=${password}`)
+//             .then((res) => {
+//                 console.log("authLogin", res.data)
+//                 localStorage.setItem("tkn_id", res.data[0].id)
+//                 dispatch({
+//                     type: LOGIN_SUCCESS,
+//                     payload: res.data[0]
+//                 })
+//             })
+//             .catch((err) =>{
+//                 console.log("error login", err)
+//                 alert("email belum terdaftar")
+//             })
+//     }
+
+// }
+
+//localhost BE
+export const authLogin = (email, password) =>{
     return (dispatch) => {
-        axios.get(URL_API + `/users?email=${email}&password=${password}`)
+        axios.post(URL_API + `/users/login`, {
+            email, password
+        })
             .then((res) => {
+                console.log(res.data)
                 console.log("authLogin", res.data)
                 localStorage.setItem("tkn_id", res.data[0].id)
                 dispatch({
@@ -18,10 +41,9 @@ export const authLogin = (email, password) => {
             })
             .catch((err) =>{
                 console.log("error login", err)
-                alert("email belum terdaftar")
+                // alert("email belum terdaftar")
             })
     }
-
 }
 
 // versi biasa
@@ -44,6 +66,7 @@ export const authLogout = () => {
 
 // menyimpoan data untuk keep login
 export const keepLogin = (data) => {
+    console.log("keep login", data)
     return {
         // ngambil data dari tipe data yang authLogin
         type: LOGIN_SUCCESS,

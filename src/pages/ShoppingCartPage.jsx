@@ -101,7 +101,7 @@ class ShoppingCartPage extends React.Component {
                                         remove
                                                 </span>
                                 </InputGroupAddon>
-                                <Input size="sm" placeholder="qty" style={{ textAlign: 'center', width: "5vw" }} value={item.qty} innerRef={el => this.inputQty = el} />
+                                <Input size="sm" placeholder="qty" style={{ textAlign: 'center', width: "10px" }} value={item.qty} innerRef={el => this.inputQty = el} />
                                 <InputGroupAddon addonType="append" className="append-prepend">
                                     <span className="material-icons border" onClick={() => this.onBtnIncrement(index)}>
                                         add
@@ -180,14 +180,14 @@ class ShoppingCartPage extends React.Component {
                     // console.log(idxStok+1)
                     // console.log("itemqty",item.qty)
                     // console.log("befor", value.stok[idxStok+1].qty)
-                    // value.stok[idxStok+1].qty -= item.qty
+                    value.stok[idxStok].qty -= item.qty
                     // console.log("after",value.stok[idxStok+1].qty)
                     // console.log(value.stok)
                     axios.patch(URL_API + `/products/${value.id}`, {
-                        stok: value.stok
+                        stok: parseInt(value.stok)
                     })
                     .then((res) =>{
-                        console.log(res.data)
+                        console.log("respon patch produk", res.data)
                     }).catch(err => console.log(err))
                 }
             })

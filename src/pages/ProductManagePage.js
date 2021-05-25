@@ -51,26 +51,26 @@ class ProductManagePage extends React.Component {
         this.setState({ modalEdit: !this.state.modalEdit })
     }
 
-    printStokEdit = (stok) => {
-        // let { stok } = this.state.dataProduk
-        // console.log(stok)
+    // printStokEdit = (stok) => {
+    //     // let { stok } = this.state.dataProduk
+    //     // console.log(stok)
 
-        return stok.map((item, index) => {
-            return <>
-                <Input type="text" defaultValue={item.type} />
-                <Input type="text" defaultValue={item.qty} />
-            </>
-        })
-    }
+    //     return stok.map((item, index) => {
+    //         return <>
+    //             <Input type="text" defaultValue={item.type} />
+    //             <Input type="text" defaultValue={item.qty} />
+    //         </>
+    //     })
+    // }
 
 
-    printImageEdit = (image) => {
-        return image.map((item, index) => {
-            return <>
-                <Input type="text" defaultValue={item} />
-            </>
-        })
-    }
+    // printImageEdit = (image) => {
+    //     return image.map((item, index) => {
+    //         return <>
+    //             <Input type="text" defaultValue={item} />
+    //         </>
+    //     })
+    // }
 
 
     printDataProduk = () => {

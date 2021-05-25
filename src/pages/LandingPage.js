@@ -13,6 +13,7 @@ class LandingPage extends React.Component {
     }
 
     printProduk = () => {
+        console.log("produk: ", this.props.products)
         if (this.props.products.length > 0) {
             return this.props.products.map((item, index) => {
                 return <CardProducts
@@ -21,12 +22,13 @@ class LandingPage extends React.Component {
                     harga={item.harga}
                     images={item.images[0]}
                     item={item}
-                    id={item.id} />
+                    id={item.idProduk} />
             })
 
-        } else {
-            return null
-        }
+        } 
+        // else {
+        //     return null
+        // }
     }
     render() {
         return (

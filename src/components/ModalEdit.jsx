@@ -3,7 +3,8 @@ import { Badge, Button, Container, Table, Modal, ModalHeader, ModalBody, ModalFo
 import axios from 'axios'
 import { URL_API } from '../Helper';
 import { connect } from 'react-redux'
-import { getProductAction } from '../action'
+import { updateProducts } from '../action'
+
 class ModalEdit extends React.Component {
     constructor(props) {
         super(props);
@@ -23,7 +24,7 @@ class ModalEdit extends React.Component {
             let { stok } = this.props
             return stok.map((item, index) => {
                 return <div className="d-flex">
-                    <Input type="text" defaultValue={item.type} className="m-1" onChange={(e) => this.handleType(e, index)} placeholder={`Tipe - ${index+1}`}/>
+                    <Input type="text" defaultValue={item.type} className="m-1" onChange={(e) => this.handleType(e, index)} placeholder={`Tipe - ${index + 1}`} />
                     <Input type="text" defaultValue={item.qty} className="m-1" onChange={(e) => this.handleStok(e, index)} />
                     <span className="material-icons btn btn-outline-danger" style={{ float: 'right' }} onClick={() => this.onBtnDeleteStok(index)}>
                         remove
@@ -90,18 +91,17 @@ class ModalEdit extends React.Component {
     }
 
     onBtnDeleteStok = (index) => {
-        
+
         this.props.stok.splice(index, 1)
         this.setState(this.props.stok)
     }
 
     handleImage = (e, index) => {
-        alert("hai")
         this.props.images[index] = e.target.value
     }
 
     handleStok = (e, index) => {
-        this.props.stok[index].qty = e.target.value
+        this.props.stok[index].qty = parseInt(e.target.value)
         // console.log("handle", this.props.stok)
     }
 
@@ -112,21 +112,22 @@ class ModalEdit extends React.Component {
         let nama = this.editProduk.value
         let deskripsi = this.editDeskripsi.value
         let brand = this.editBrand.value
-        let kategori = this.editKategori.value
+        // let kategori = this.editKategori.value
         let stok = this.props.stok
         let images = this.props.images
-        let harga = this.editHarga.value
+        let harga = parseInt(this.editHarga.value)
         // console.log(nama, deskripsi, brand, kategori, harga)
         // console.table("gambar", images)
         // console.table("stok", stok)
         // console.table(images)
         // console.log("id", this.props.dataEdit.id)
-        
-        axios.patch(URL_API + `/products/${this.props.dataEdit.id}`,
-            { nama, deskripsi, brand, kategori, stok, images, harga })
+
+        axios.patch(URL_API + `/products/update/${this.props.dataEdit.idProduk}`,
+            { nama, deskripsi, images, stok, brand, harga })
             .then(res => {
                 // this.setState({ selectedIndex: null })
-                // this.props.getProductAction()
+                this.props.updateProducts(res.data)
+                console.log("res data patch:", res.data)
                 this.props.toggle()
 
             })
@@ -138,7 +139,6 @@ class ModalEdit extends React.Component {
     //PRINT STOK
     render() {
         console.log("props data edit", this.props.dataEdit)
-        console.log("state stok di child", this.state.stok)
         return (
             <>
                 <Modal isOpen={this.props.modalEdit} toggle={this.onBtnCancel}>
@@ -193,4 +193,4 @@ class ModalEdit extends React.Component {
     }
 }
 
-export default connect(null, { getProductAction })(ModalEdit);
+export default connect(null, { updateProducts })(ModalEdit);

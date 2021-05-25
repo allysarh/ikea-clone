@@ -28,15 +28,18 @@ class App extends React.Component {
 
   reLogin = () => {
     let idToken = localStorage.getItem("tkn_id")
-    // console.log("token :", idToken)
-    axios.get(URL_API + `/users?id=${idToken}`)
-      .then(res => {
-        // console.log("res", res.data[0])
-        this.props.keepLogin(res.data[0])
-      })
-      .catch(err => {
-        console.log("keeplogin :", err)
-      })
+    if (idToken) {
+      axios.post(URL_API + `/users/keep`, {
+        id: idToken
+      }) //diganti pake route baru
+        .then(res => {
+          // console.log("res", res.data[0])
+          this.props.keepLogin(res.data[0])
+        })
+        .catch(err => {
+          console.log("keeplogin :", err)
+        })
+    }
   }
 
   // getProducts = () => {
@@ -66,14 +69,14 @@ class App extends React.Component {
           <Route path="/products-detail" component={ProductDetail} />
           <Route path="/shopping-cart" component={ShoppingCartPage} />
           {
-            this.props.role === "admin" &&
+            this.props.role === "Admin" &&
             <>
               <Route path="/product-management" component={ProductManagePage} />
               <Route path="/transaction-management" component={TransactionPage} />
             </>
           }
           {
-            this.props.role === "user" &&
+            this.props.role === "User" &&
             <>
               <Route path="/check-out" component={CheckOutPage} />
               <Route path="/history" component={HistoryPage} />
