@@ -31,8 +31,6 @@ export const authLogin = (email, password) =>{
             email, password
         })
             .then((res) => {
-                console.log(res.data)
-                console.log("authLogin", res.data)
                 localStorage.setItem("tkn_id", res.data[0].id)
                 dispatch({
                     type: LOGIN_SUCCESS,
@@ -45,6 +43,13 @@ export const authLogin = (email, password) =>{
             })
     }
 }
+
+// auth login get data cart terpisah
+// export const authLogin = (email, password) =>{
+//     return async (dispatch) =>{
+
+//     }
+// }
 
 // versi biasa
 
@@ -71,8 +76,25 @@ export const keepLogin = (data) => {
         // ngambil data dari tipe data yang authLogin
         type: LOGIN_SUCCESS,
         payload: data
+        // get cart
+        
     }
 }
+
+// cara 2
+// export const keepLogin = (data) =>{
+//     return async (dispatch) =>{
+//         try {
+//             let cart = await dispatch(getCart(data.id))
+//             dispatch({
+//                 type: LOGIN_SUCCESS,
+//                 payload: {...data, cart}
+//             })
+//         } catch (error) {
+//             console.log(error)
+//         }
+//     }
+// }
 
 // UPDATE CART DI SHOPPINGCART
 export const updateCart = (data) =>{
@@ -80,5 +102,52 @@ export const updateCart = (data) =>{
     return {
         type: UPDATE_CART,
         payload: data
+    }
+}
+
+export const getCart = (id) =>{
+    return async (dispatch) =>{
+        try {
+            let res = await axios.get(URL_API + `/transactions/get-cart/${id}`)
+            console.log("res", res.data)
+            return res.data
+        } catch (error) {
+            console.log(error)
+        }
+    }
+}
+
+export const updateCartQty = ({id, qty, idcart}) =>{
+    console.log("req body patch", {id, qty, idcart})
+    return async (dispatch) => {
+        try {
+            let updateQty = await axios.patch(URL_API + `/transactions/update-qty`, {
+                id, qty, idcart
+            })
+            
+            dispatch({
+                type: UPDATE_CART,
+                payload: updateQty.data
+            })
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+}
+
+export const deleteCart = (id, idcart) =>{
+    return async (dispatch) => {
+        try {
+            await axios.delete(URL_API + `/transactions/delete-cart/${idcart}`)
+            let cart = await dispatch(getCart(id))
+            dispatch({
+                type: UPDATE_CART,
+                payload: cart
+            })
+
+        } catch (error) {
+            console.log(error)
+        }
     }
 }

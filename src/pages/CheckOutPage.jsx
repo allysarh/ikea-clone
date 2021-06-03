@@ -10,27 +10,27 @@ class CheckOutPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            dataTransaction: [],
+            // dataTransaction: [],
             transactionCart: [],
             redirectHistory: false
         }
     }
 
     componentDidMount() {
-        this.getDataTransaction()
+        this.props.getTransactionAction(this.props.id)
     }
 
-    getDataTransaction = () => {
-        axios.get(URL_API + `/transactions/?idUser=${this.props.id}`)
-            .then((res) => {
-                // console.log("get data transaksi", res.data)
-                this.setState({ dataTransaction: res.data})
-                this.setState({ transactionCart: res.data.cart })
-                this.props.getTransactionAction(res.data)
+    // getDataTransaction = () => {
+    //     axios.get(URL_API + `/transactions/get-trans/${this.props.id}`)
+    //         .then((res) => {
+    //             console.log("get data transaksi -->>>", res.data)
+    //             this.setState({ dataTransaction: res.data })
+    //             this.setState({ transactionCart: res.data.cart })
+    //             this.props.getTransactionAction(res.data)
 
-            })
-            .catch((err) => console.log("error", err))
-    }
+    //         })
+    //         .catch((err) => console.log("error", err))
+    // }
 
     printInfoCust = () => {
         return (
@@ -41,21 +41,21 @@ class CheckOutPage extends React.Component {
         )
     }
     printDataTransaction = () => {
-        let unpaidTransactions = this.state.dataTransaction.filter(item => item.statusPaid === "unpaid")
+        let unpaidTransactions = this.props.dataTransaction.filter(item => item.status === "Unpaid")
         return unpaidTransactions.map((item, index) => {
             return (
                 <>
                     <div >
                         <div>
                             {
-                                item.cart.map((item, index) => {
+                                item.transactionDetail.map((i, index) => {
                                     return (
                                         <div className="d-flex">
-                                            <img height="100vh" src={item.image} />
+                                            <img height="100vh" src={i.image} />
                                             <div className="d-flex flex-column justify-content-center">
-                                                <span>{item.qty} x {item.nama}</span>
-                                                <span>{item.type}</span>
-                                                <h6>Rp. {item.total.toLocaleString()}</h6>
+                                                <span>{i.qty} x {i.nama}</span>
+                                                <span>{i.type}</span>
+                                                <h6>Rp. {i.harga * i.qty}</h6>
                                             </div>
                                         </div>
                                     )
@@ -63,7 +63,7 @@ class CheckOutPage extends React.Component {
                             }
                         </div>
                         <span className="m-1">Date: {item.date}</span><br />
-                        <span className="m-1">Status:</span><Badge color="danger">{item.statusPaid}</Badge>
+                        <span className="m-1">Status:</span><Badge color="danger">{item.status}</Badge>
                     </div>
                     <hr />
                 </>
@@ -72,9 +72,11 @@ class CheckOutPage extends React.Component {
     }
 
     getAllPrice = () => {
-        let totalAll = this.state.dataTransaction.filter(e => e.statusPaid === "unpaid").map((item, index) => {
-            return item.totalPayment
+        console.log("data transaksi:", this.props.dataTransaction)
+        let totalAll = this.props.dataTransaction.filter(e => e.status === "Unpaid").map((item, index) => {
+            return item.total_payment
         })
+        console.log("get all price", totalAll)
         return totalAll.reduce((a, b) => (a + b), 0)
 
     }
@@ -86,27 +88,43 @@ class CheckOutPage extends React.Component {
         //     item.statusPaid = "paid"
         //     return item
         // })
-        
+
         // console.log(statusPaidChanged)
         // console.log("id", this.state.dataTransaction[0].id)
-        
-        let dataUnpaid = this.state.dataTransaction.filter(e => e.statusPaid === "unpaid")
-        let totalPayment = Math.round(this.getAllPrice() * 110 / 100)
-        console.log("total",totalPayment)
-        
-        axios.patch(URL_API + `/transactions/${dataUnpaid[0].id}`, {
-            statusPaid: "paid", totalPayment: totalPayment
-        })
-            .then((res) => {
-                console.log("respon patch status", res.data)
-                this.getDataTransaction()
+
+        let unpaidIdTrans = this.props.dataTransaction.filter(e => e.status === "Unpaid").map(e => e.idtransaction)
+        console.log("😍😍", unpaidIdTrans)
+
+        // let totalPayment = Math.round(this.getAllPrice() * 110 / 100)
+        // console.log("total",totalPayment)
+
+        unpaidIdTrans.forEach(item => {
+            axios.patch(URL_API + `/transactions/update-trans/${item}`, {
+                idstatus: 7
             })
-            .catch((err) => console.log("get respon patch bayar error", err))
+                .then(res => {
+                    console.log("Update status transaksi:", res.data)
+
+                })
+                .catch(err => {
+                    console.log("error update status transaksi", err)
+                })
+        })
+        // axios.patch(URL_API + `/transactions/${dataUnpaid[0].id}`, {
+        //     statusPaid: "paid", totalPayment: totalPayment
+        // })
+        //     .then((res) => {
+        //         console.log("respon patch status", res.data)
+        //         this.getDataTransaction()
+        //     })
+        //     .catch((err) => console.log("get respon patch bayar error", err))
         this.setState({redirectHistory: !this.state.redirectHistory})
+
+
 
     }
     render() {
-        if(this.state.redirectHistory){
+        if (this.state.redirectHistory) {
             return <Redirect to="/history" />
         } else {
             return (
@@ -200,24 +218,25 @@ class CheckOutPage extends React.Component {
                                         <Button color="warning" style={{ width: '100%' }} onClick={this.bayar}>Lanjutkan Pembayaran</Button>
                                     </div>
                                 </div>
-    
+
                             </div>
                         </div>
                         <hr />
                     </div>
                     <div className="row">
-    
+
                     </div>
                 </Container>
             );
         }
-        
+
     }
-} const mapStateToProps = ({ authReducer }) => {
+} const mapStateToProps = ({ authReducer, TransactionsReducer }) => {
     return {
         id: authReducer.id,
         username: authReducer.username,
-        email: authReducer.email
+        email: authReducer.email,
+        dataTransaction: TransactionsReducer.transaction_list
     }
 }
 export default connect(mapStateToProps, { getProductAction, getTransactionAction })(CheckOutPage);

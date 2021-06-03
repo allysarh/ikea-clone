@@ -16,7 +16,7 @@ class ProductsPage extends React.Component {
         }
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.props.getProductAction()
     }
     printProduk = () => {
@@ -26,10 +26,10 @@ class ProductsPage extends React.Component {
                 nama={item.nama}
                 deskripsi={item.deskripsi}
                 harga={item.harga}
-                images={item.images[0]}
+                images={item.images[0].images}
                 iitem={item}
                 id={item.idProduk}
-                index={index}/>
+                index={index} />
         })
 
         // }
@@ -123,7 +123,7 @@ class ProductsPage extends React.Component {
         } else {
             return this.props.products
         }
-        this.setState({data: this.props.products})
+        this.setState({ data: this.props.products })
         console.log(this.state.data)
         // console.log(this.props.products)
     }
@@ -133,26 +133,23 @@ class ProductsPage extends React.Component {
         return (
             <Container fluid>
                 <hr />
-                <Row className="m-1">
-                    <Col xs="4"></Col>
-                    <Col xs="4">
-                        <h4 style={{ textAlign: 'center' }}>Produk Pilihan</h4>
-                    </Col>
-                    <Col xs="4">
-                        <div style={{ width: '60%', float: 'right' }}>
-                            <Form>
-                                <Input type="select" onChange={e => this.handleChange(e)} innerRef={element => this.orders = element}>
-                                    <option selected disabled value="">Urutkan berdasarkan .. </option>
-                                    <option value="harga-asc">Harga Termurah</option>
-                                    <option value="harga-desc">Harga Termahal</option>
-                                    <option value="nama-asc">A-Z</option>
-                                    <option value="nama-desc">Z-A</option>
-                                </Input>
-                            </Form>
-                        </div>
-                    </Col>
-                </Row>
-                <div className="d-flex flex-wrap justify-content-center">
+                <div className="d-flex row m-1">
+                    <div className="col-12 d-flex justify-content-center">
+                        <h4>Produk Pilihan</h4>
+                    </div>
+                    <div className="col-3" style={{ width: '100%', float: 'right' }}>
+                        <Form>
+                            <Input type="select" onChange={e => this.handleChange(e)} innerRef={element => this.orders = element}>
+                                <option selected disabled value="">Urutkan berdasarkan .. </option>
+                                <option value="harga-asc">Harga Termurah</option>
+                                <option value="harga-desc">Harga Termahal</option>
+                                <option value="nama-asc">A-Z</option>
+                                <option value="nama-desc">Z-A</option>
+                            </Input>
+                        </Form>
+                    </div>
+                </div>
+                <div className="d-flex justify-content-center" style={{flexFlow: 'row wrap'}}>
                     {this.printProduk()}
                 </div>
             </Container>

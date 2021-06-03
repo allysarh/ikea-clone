@@ -20,7 +20,7 @@ class LandingPage extends React.Component {
                     nama={item.nama}
                     deskripsi={item.deskripsi}
                     harga={item.harga}
-                    images={item.images[0]}
+                    images={item.images[0].images}
                     item={item}
                     id={item.idProduk} />
             })
@@ -32,9 +32,10 @@ class LandingPage extends React.Component {
     }
     render() {
         return (
-            <Container fluid>
+            <Container fluid style={{width: '100%'}}>
                 <PrintCarousel />
                 <CarouselProduct isi={this.printProduk()} />
+
                 <div>
                     <h3 style={{textAlign: 'center', margin: '3%'}}>Ide inspirasi lainnya</h3>
                     <Row>

@@ -39,8 +39,8 @@ class CarouselProduct extends React.Component {
                 {
                     breakpoint: 2400,
                     settings: {
-                        slidesToShow: 4,
-                        slidesToScroll: 3,
+                        slidesToShow: 5,
+                        slidesToScroll: 1,
                         infinite: true,
                         dots: true
                     }
@@ -72,9 +72,9 @@ class CarouselProduct extends React.Component {
             ]
         };
         return (
-            <div className="container">
+            <div className="m-5">
                 <Slider {...settings}>
-                    {this.props.isi}
+                        {this.props.isi}
                 </Slider>
             </div>
         );

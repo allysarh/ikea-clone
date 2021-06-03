@@ -17,6 +17,7 @@ export const getProductAction = () =>{
         axios.get(URL_API + `/products/read`)
         .then((res) =>{
             // mengarahkan data ke reducer
+            console.log("res data:", res.data)
             dispatch({
                 type: GET_PRODUCT,
                 payload: [...res.data]

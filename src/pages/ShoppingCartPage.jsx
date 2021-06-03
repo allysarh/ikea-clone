@@ -2,7 +2,7 @@ import axios from 'axios';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Container, Table, InputGroup, Input, InputGroupAddon, Button } from 'reactstrap';
-import { updateCart, getProductAction, updateProducts } from '../action'
+import { deleteCart, getCart, updateCartQty, getProductAction, updateProducts, updateCart } from '../action'
 import { URL_API } from '../Helper';
 import { Redirect } from 'react-router-dom';
 // import { authReducer } from '../reducer/AuthReducer';
@@ -54,16 +54,22 @@ class ShoppingCartPage extends React.Component {
     // }
 
     onBtnIncrement = (index) => {
+        let {id, cart} = this.props
         this.props.cart[index].qty++
         // agar memperbaharui komponen, harus disediakan temporary data
-        this.props.updateCart([...this.props.cart])
+        // this.props.updateCart([...this.props.cart])
         // console.log("props cart sesudah", this.props.cart[index].qty)
+        this.props.updateCartQty({id, qty: cart[index].qty, idcart: cart[index].idcart})
     }
 
     onBtnDecrement = (index) => {
+        let {id, cart} = this.props
         if (this.props.cart[index].qty > 1) {
             this.props.cart[index].qty--
-            this.props.updateCart([...this.props.cart])
+            // this.props.updateCart([...this.props.cart])
+            this.props.updateCartQty({id, qty: cart[index].qty, idcart: cart[index].idcart})
+        } else {
+            this.onBtnRemove(cart[index].idcart)
         }
     }
     getAllQty = () => {
@@ -73,12 +79,13 @@ class ShoppingCartPage extends React.Component {
     }
 
     getAllPrice = () => {
+        console.log("cart:",this.props.cart)
         return this.props.cart.map((item, index) => {
             return (item.qty * item.harga)
         }).reduce((a, b) => a + b, 0)
     }
     printCart = () => {
-
+        
         return this.props.cart.map((item, index) => {
             return (
                 <tr>
@@ -125,7 +132,7 @@ class ShoppingCartPage extends React.Component {
                             </Button>
                         </div>
                         <div className="d-flex align-items-center m-1">
-                            <Button color="warning" className="d-flex align-items-center" onClick={() => this.onBtnRemove(index)}>
+                            <Button color="warning" className="d-flex align-items-center" onClick={() => this.onBtnRemove(item.idcart)}>
                                 <span className="material-icons">
                                     delete_outline
                             </span>
@@ -138,15 +145,17 @@ class ShoppingCartPage extends React.Component {
         })
     }
 
-    onBtnRemove = (index) => {
-        this.props.cart.splice(index, 1)
-        axios.patch(URL_API + `/users/${this.props.id}`, { cart: this.props.cart })
-            .then((res) => {
-                this.props.updateCart([...this.props.cart])
-            })
-            .catch((err) => {
-                console.log("error remove", err)
-            })
+    onBtnRemove = (idcart) => {
+        let {id} = this.props
+        // this.props.cart.splice(index, 1)
+        // axios.patch(URL_API + `/users/${this.props.id}`, { cart: this.props.cart })
+        //     .then((res) => {
+        //         this.props.updateCart([...this.props.cart])
+        //     })
+        //     .catch((err) => {
+        //         console.log("error remove", err)
+        //     })
+        this.props.deleteCart(id, idcart )
     }
 
     resetCart = () => {
@@ -169,54 +178,60 @@ class ShoppingCartPage extends React.Component {
         console.log(this.props.cart)
         console.log(this.props.product)
 
-        this.props.cart.forEach((item, index) =>{
-            this.props.product.forEach((value, idx) =>{
-                if(item.nama === value.nama){
-                    console.log(item.nama, value.nama)
-                    console.log(value.stok, item.type)
-                    let idxStok = value.stok.findIndex(val =>{
-                        return val.type === item.type
-                    })
-                    // console.log(idxStok+1)
-                    // console.log("itemqty",item.qty)
-                    // console.log("befor", value.stok[idxStok+1].qty)
-                    value.stok[idxStok].qty -= item.qty
-                    // console.log("after",value.stok[idxStok+1].qty)
-                    // console.log(value.stok)
-                    axios.patch(URL_API + `/products/${value.id}`, {
-                        stok: parseInt(value.stok)
-                    })
-                    .then((res) =>{
-                        console.log("respon patch produk", res.data)
-                    }).catch(err => console.log(err))
-                }
-            })
-        })
-        let idUser = this.props.id
+        // this.props.cart.forEach((item, index) =>{
+        //     this.props.product.forEach((value, idx) =>{
+        //         if(item.nama === value.nama){
+        //             console.log(item.nama, value.nama)
+        //             console.log(value.stok, item.type)
+        //             let idxStok = value.stok.findIndex(val =>{
+        //                 return val.type === item.type
+        //             })
+        //             // console.log(idxStok+1)
+        //             // console.log("itemqty",item.qty)
+        //             // console.log("befor", value.stok[idxStok+1].qty)
+        //             value.stok[idxStok].qty -= item.qty
+        //             // console.log("after",value.stok[idxStok+1].qty)
+        //             // console.log(value.stok)
+        //             axios.patch(URL_API + `/products/${value.id}`, {
+        //                 stok: parseInt(value.stok)
+        //             })
+        //             .then((res) =>{
+        //                 console.log("respon patch produk", res.data)
+        //             }).catch(err => console.log(err))
+        //         }
+        //     })
+        // })
+        let id = this.props.id
         let username = this.props.username
         let totalPayment = this.getAllPrice()
         let statusPaid = this.state.statusPaid
+        let idstatus = 6
         let cart = this.props.cart
-
+        let note = ''
         let date = new Date();
         let dd = String(date.getDate()).padStart(2, '0');
         let mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
         let yyyy = date.getFullYear();
 
-        date = mm + '/' + dd + '/' + yyyy;
+        // baru
+        let ongkir = 15000
+        date = yyyy + '-' + mm + '-' + dd;
         let cartReset = []
 
-        console.table([{ idUser, username, totalPayment, statusPaid, cart, date }])
-        
+        console.table([{ id, username, totalPayment, statusPaid, cart, date }])
+        console.log({
+                    id, ongkir, total_payment: totalPayment, note, idstatus, transactionDetail: cart
+                })
         if (cart.length > 0) {
             ///post data ke database transaksi
-            axios.post(URL_API + `/transactions`, {
-                idUser, username, totalPayment, statusPaid, cart, date
+            axios.post(URL_API + `/transactions/add-trans`, {
+                id, ongkir, total_payment: totalPayment, note, idstatus, transactionDetail: cart
             })
                 .then((res) => {
                     console.log(res.data)
                     this.props.updateCart(cartReset)
-                    this.resetCart()
+                    console.log("cart di resucer", this.props.cart)
+                    // this.resetCart()
                     this.setState({ redirectCO: !this.state.redirectCO })
                 })
                 .catch((err) => console.log(err))
@@ -271,6 +286,7 @@ class ShoppingCartPage extends React.Component {
                     </span>
                         <span>Check Out</span>
                     </Button>
+                    
                 </Container>
             );
         }
@@ -285,4 +301,4 @@ const mapStateToProps = ({ authReducer, ProductReducers }) => {
         product: ProductReducers.products_list
     }
 }
-export default connect(mapStateToProps, { updateCart, getProductAction, updateProducts })(ShoppingCartPage);
+export default connect(mapStateToProps, { updateCart, deleteCart, updateCartQty, getProductAction, updateProducts, getCart })(ShoppingCartPage);

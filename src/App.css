@@ -1,3 +1,10 @@
+/* import font */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+* {
+  font-family: 'Noto Sans', sans-serif;
+
+}
 ::selection{
   background: #427ab3;
   color: #e1ca61;
@@ -10,3 +17,20 @@
 .black-ikea{
   color: #5d6061
 }
+
+.round-bg:hover{
+  cursor: pointer;
+  background-color: #e2e2e2;
+  border-radius: 100%;
+  width: 30;
+  height: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.round-bg{
+  padding: 5px;
+}
+
+

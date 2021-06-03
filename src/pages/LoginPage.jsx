@@ -74,7 +74,7 @@ class LoginPage extends React.Component {
                         } else {
                             if (password.match(/[a-z]/ig) && password.match(/[0-9]/ig)) {
                                 Axios.post(URL_API + `/users/register`, {
-                                    username, email, password, role, cart
+                                    username, email, password
                                 }).then(res => {
                                     this.setState((state, props) => ({
                                         alert: !this.state.alert,

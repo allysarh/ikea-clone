@@ -14,7 +14,7 @@ export const authReducer = (state=INITIAL_STATE, action) =>{
         case LOGIN_SUCCESS:
             // delete  data password
             delete action.payload.password
-            console.log("auth reducer", action.payload)
+            console.log("auth reducer -->", action.payload)
             return {...state,...action.payload}
         case UPDATE_CART:
             console.log("reducer", action.payload)

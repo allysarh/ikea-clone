@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Button, Collapse, Input, InputGroup, InputGroupAddon } from 'reactstrap';
 import { URL_API } from '../Helper';
-import { getProductAction, updateCart } from '../action'
+import { updateCart, getProductAction, updateCartQty } from '../action'
 import './ProductDetail.css'
 import { authReducer } from '../reducer/AuthReducer';
 
@@ -43,7 +43,7 @@ class ProductDetail extends React.Component {
         let { images } = this.state.detail
         return images.map((item, index) => {
             return (
-                <img className="select-image" src={item} key={index} width="100%"
+                <img className="select-image" src={item.images} key={index} width="100%"
                     onClick={() => this.setState({ thumbnail: index })} />
             )
         })
@@ -68,61 +68,92 @@ class ProductDetail extends React.Component {
 
 
 
-    onBtnAddToCart = () => {
+    onBtnAddToCart = async () => {
         if (this.state.selectedType.type) {
-            let qtyCO = this.state.output
-            let type = this.state.typeCO
-            let nama = this.state.detail.nama
-            let harga = this.state.detail.harga
-            let image = this.state.detail.images[0]
+            console.log("cart", this.props.cart)
+            console.log(this.state.selectedType)
+            let { stok, idProduk } = this.state.detail
+            let id = this.props.id
+            let idproduk_stok = this.state.selectedType.idproduk_stok
+            let qty = this.state.output
+            let index = this.props.cart.findIndex(i => i.idproduk_stok === idproduk_stok && i.type === this.state.selectedType.type)
+            console.log("index", index)
+            console.log({ id, idProduk, idproduk_stok, qty })
+
+            try {
+                if (index < 0) {
+                    let addCart = await axios.post(URL_API + `/transactions/post-cart`, { id, idProduk, idproduk_stok, qty })
+                    this.props.updateCart(addCart.data)
+                } else {
+                    this.props.cart[index].qty++
+                    console.log("qty cart baru:", this.props.cart[index].qty)
+                    this.props.updateCartQty({ id, qty: this.props.cart[index].qty, idcart: this.props.cart[index].idcart })
+                }
+                alert("add to cart success✅✅")
+            } catch (error) {
+                alert("error add cart")
+                console.log(error)
+            }
+
+            // add ke cart
+            // console.log("cart", this.props.cart)
+            // let qtyCO = this.state.output
+            // let type = this.state.typeCO
+            // let nama = this.state.detail.nama
+            // let harga = this.state.detail.harga
+            // let image = this.state.detail.images[0].images
 
             // console.log("total",this.state.total)
             // this.setState({total: this.state.output * this.state.detail.harga})
 
 
-            let cart = { qty: qtyCO, nama: nama, harga: harga, total: this.state.total, image: image, type: type }
-            console.log(cart)
+            // let cart = { qty: qtyCO, nama: nama, harga: harga, total: this.state.total, image: image, type: type }
+            // console.log("cart:",cart)
+            // console.log("data detail", this.state.detail)
+            // console.log("idstok:", this.state.detail.stok[0].idproduk_stok)
 
-            this.props.cart.push({
-                qty: qtyCO,
-                nama: nama,
-                harga: harga,
-                total: this.state.output * this.state.detail.harga,
-                image: image,
-                type: type
-            })
-            
-            let arr = [...this.props.cart]
-            let merged = arr.reduce((acc, cur) => {
-                let nama = cur.nama
-                let type = cur.type
-                let found = acc.find((elem) => {
-                    if (elem.nama === nama && elem.type === type) {
-                        return [nama, type]
-                    }
-                });
-                if (found) {
-                    // console.log("found",found)
-                    found.qty += cur.qty;
-                } else {
-                    acc.push(cur);
-                }
-                return acc;
-            }, []);
+            // this.props.cart.push({
+            //     qty: qtyCO,
+            //     nama: nama,
+            //     harga: harga,
+            //     total: this.state.output * this.state.detail.harga,
+            //     image: image,
+            //     type: type
+            // })
 
-            axios.patch(URL_API + `/users/${this.props.id}`, {
-                cart: merged
-            })
-                .then((res) => {
-                    console.log("hasil patch:", res.data)
-                    this.props.getProductAction()
-                })
+            // let arr = [...this.props.cart]
+            // kalau tipenya sama tambhain qty bukan array baru
+            // let merged = arr.reduce((acc, cur) => {
+            //     let nama = cur.nama
+            //     let type = cur.type
+            //     let found = acc.find((elem) => {
+            //         if (elem.nama === nama && elem.type === type) {
+            //             return [nama, type]
+            //         }
+            //     });
+            //     if (found) {
+            //         // console.log("found",found)
+            //         found.qty += cur.qty;
+            //     } else {
+            //         acc.push(cur);
+            //     }
+            //     return acc;
+            // }, []);
 
-            alert("Berhasil menambahkan!")
+            // update data cart di reducer
+            // axios.patch(URL_API + `/users/${this.props.id}`, {
+            //     cart: {id, idProduk, idproduk_stok, qty}
+            // })
+            //     .then((res) => {
+            //         console.log("hasil patch:", res.data)
+            //         this.props.getProductAction()
+            //     })
+
+            // alert("Berhasil menambahkan!")
             // reset ke 0
+
             this.setState({ output: 1 })
-            // qty, nama, tipe, harga, total harga keseluruhan, image
-            // axios patch ke cart
+
         }
 
     }
@@ -141,7 +172,7 @@ class ProductDetail extends React.Component {
                                 {this.renderImages()}
                             </div>
                             <div className="col-md-7">
-                                <img src={this.state.detail.images[this.state.thumbnail]} width="100%" />
+                                <img src={this.state.detail.images[this.state.thumbnail].images} width="100%" />
                             </div>
                             <div className="col-md-4">
                                 <div style={{ borderBottom: '1px solid grey' }}>
@@ -225,4 +256,4 @@ const mapStateToProps = ({ authReducer }) => {
 }
 
 
-export default connect(mapStateToProps, { getProductAction, updateCart })(ProductDetail);
+export default connect(mapStateToProps, { updateCart, getProductAction, updateCartQty })(ProductDetail);

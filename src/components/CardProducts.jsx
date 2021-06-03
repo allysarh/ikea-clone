@@ -21,12 +21,16 @@ class CardProducts extends React.Component {
 
         return (
             <div className="d-flex justify-content-center m-1">
-                <Card className="m-1" style={{ width: '250px', height: '500px' }}>
+                <Card className="m-1" style={{ width: '20vw', height: 'auto' }}>
                     <Link to={`/products-detail?id=${this.props.id}`} style={{ textDecoration: 'none', color: 'black' }}>
-                        <CardImg top style={{ margin: 'auto', objectFit: 'contain', height: '50%' }} src={this.props.images} alt="Card image cap" />
+                        <div style={{ width: '100%', height: '35vh', margin: 'auto', padding: '5%' }}>
+                            <CardImg top style={{ margin: 'auto', objectFit: 'contain', height: '100%' }} src={this.props.images} alt="Card image cap" />
+                        </div>
                         <CardBody>
                             <CardTitle tag="h5">{this.props.nama}</CardTitle>
-                            <CardSubtitle style={{ fontSize: '14px' }} className="mb-2 text-muted">{this.props.deskripsi}</CardSubtitle>
+                            <div style={{height: '10vh'}}>
+                                <CardSubtitle style={{ fontSize: '14px' }} className="mb-2 text-muted">{this.props.deskripsi}</CardSubtitle>
+                            </div>
                             <CardText tag="h5" style={{ fontWeight: 'bolder' }}>Rp. {this.props.harga.toLocaleString()} </CardText>
                         </CardBody>
                     </Link>

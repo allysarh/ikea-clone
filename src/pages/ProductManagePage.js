@@ -82,18 +82,20 @@ class ProductManagePage extends React.Component {
                     <td>{index + 1}</td>
                     <td>{item.nama}</td>
                     {/* render tipe data array */}
-                    <td >
-                        {
-                            index === this.state.thumbnail[0] ?
-                                <img src={item.images[this.state.thumbnail[1]]} width="50%" alt={item.nama + index} />
-                                :
-                                <img src={item.images[0]} width="60%" alt={item.nama + index} />
-                        }
+                    <td>
+                        <div style={{ display: 'flex', width: '100%', display: 'flex', justifyContent: 'center'}}>
+                            {
+                                index === this.state.thumbnail[0] ?
+                                    <img src={item.images[this.state.thumbnail[1]].images} width="50%" alt={item.nama + index} />
+                                    :
+                                    <img src={item.images[0].images} width="50%" alt={item.nama + index} />
+                            }
+                        </div>
                         <hr />
-                        <div className="d-flex">
+                        <div className="d-flex justify-content-center">
                             {
                                 item.images.map((value, idx) => {
-                                    return <img src={value} style={{ cursor: "pointer" }} width="20%" alt={item.nama + idx}
+                                    return <img src={value.images} style={{ cursor: "pointer", marginRight: 10 }} width="20%" height="15%" alt={item.nama + idx}
                                         onClick={() => this.setState({ thumbnail: [index, idx] })} />
                                 })
                             }
@@ -109,19 +111,23 @@ class ProductManagePage extends React.Component {
                         {
                             item.stok &&
                             item.stok.map((item, index) => {
-                                return <>
-                                    <h5>{item.type}
-                                        <Badge color="secondary">{item.qty}</Badge>
-                                    </h5>
-                                </>
+                                return (
+                                    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                                        <div style={{ width: '80%' }}>{item.type}:</div>
+                                        <div style={{ width: '20%' }}>
+                                            <Badge color="secondary" style={{ alignSelf: 'center' }}>{item.qty}</Badge>
+                                        </div>
+
+                                    </div>
+                                )
                             })}
                     </td>
 
 
-                    <td>Rp. {item.harga.toLocaleString()}</td>
-                    <td>
-                        <Button className="m-2" onClick={() => this.setState({ dataEdit: item, modalEdit: !this.state.modalEdit })}>Edit</Button>
-                        <Button onClick={() => this.onBtnDelete(item.id)}>Delete</Button>
+                    <td style={{width: '10%', textAlign: 'center'}}>Rp. {item.harga.toLocaleString()}</td>
+                    <td style={{display: 'flex', borderBottom: 'none', borderLeft: 'none', borderRight: 'none'}}>
+                        <Button className="m-2" color="warning" onClick={() => this.setState({ dataEdit: item, modalEdit: !this.state.modalEdit })}>Edit</Button>
+                        <Button className="m-2" onClick={() => this.onBtnDelete(item.idProduk)} color="danger">Delete</Button>
                     </td>
                 </tr>
             )
@@ -136,7 +142,8 @@ class ProductManagePage extends React.Component {
     // }
 
     onBtnDelete = (id) => {
-        axios.delete(URL_API + `/products/${id}`)
+        console.log("id: ", id)
+        axios.delete(URL_API + `/products/delete?id=${id}`)
             .then((res) => {
                 this.props.getProductAction()
             })
@@ -419,34 +426,28 @@ class ProductManagePage extends React.Component {
 
 
     render() {
-        console.log("data edit:", this.state.dataEdit)
+        console.log("data edit: --->", this.state.dataEdit.images)
         // console.log(this.state.modalEdit)
         return (
-            <Container >
-                <h1 style={{ textAlign: 'center' }} className="m-2">Product Management Page</h1>
-                <div>
-                    <div className="m-2" style={{ float: 'right' }}>
-                        <Button color="danger" onClick={this.toggle}>ADD</Button>
+            <Container fluid style={{ width: '100%', padding: '1%' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', margin: '1%' }}>
+                    <h4 style={{ textAlign: 'left', fontWeight: '500' }} className="m-2"> Product Management Page</h4>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <div style={{ float: 'right', marginRight: 10 }}>
+                            <Form >
+                                <Input type="select" onChange={e => this.handleChange(e)} innerRef={element => this.orders = element} style={{backgroundColor: '#f5f5f5', borderRadius: '30px'}}>
+                                    <option selected disabled value="">Urutkan...</option>
+                                    <option value="harga-asc">Harga Termurah</option>
+                                    <option value="harga-desc">Harga Termahal</option>
+                                    <option value="huruf-asc">A-Z</option>
+                                    <option value="huruf-desc">Z-A</option>
+                                </Input>
+                            </Form>
+                        </div>
+                        <Button style={{backgroundColor: '#417ab1', border: 'none'}} onClick={this.toggle}>ADD</Button>
                     </div>
-                    <div className="m-3" style={{ float: 'right' }}>
-                        <h6>Tambahkan Produk:</h6>
-                    </div>
-                    <div style={{ float: 'right' }}>
-                        <Form>
-                            <Input type="select" onChange={e => this.handleChange(e)} innerRef={element => this.orders = element}>
-                                <option selected disabled value="">Urutkan berdasarkan .. </option>
-                                <option value="harga-asc">Harga Termurah</option>
-                                <option value="harga-desc">Harga Termahal</option>
-                                <option value="huruf-asc">A-Z</option>
-                                <option value="huruf-desc">Z-A</option>
-                            </Input>
-                        </Form>
-                    </div>
-                    <div style={{ float: 'right' }}>
-                        <h6>Urut berdasarkan: </h6>
-                    </div>
-
                 </div>
+
 
                 <ModalComp toggle={this.toggle} modal={this.state.modal} />
                 <ModalEdit

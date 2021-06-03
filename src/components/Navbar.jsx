@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import {
     Collapse, Navbar, NavbarBrand, NavbarToggler, Nav, NavItem, NavLink, UncontrolledDropdown, DropdownToggle, DropdownMenu,
-    DropdownItem, InputGroupAddon, Input, InputGroup, Badge, Alert, UncontrolledAlert, Dropdown
+    DropdownItem, InputGroupAddon, Input, InputGroup, Badge, Alert, UncontrolledAlert, Dropdown, Button
 } from 'reactstrap';
 import { connect } from 'react-redux'
 // action untuk mereset data pada reducer
@@ -20,7 +20,8 @@ class NavbarComp extends React.Component {
             openSearch: false,
             dataSearch: [],
             qty: 0,
-            openCart: false
+            openCart: false,
+            sideNav: true
         }
     }
     getAllQty = () => {
@@ -38,6 +39,7 @@ class NavbarComp extends React.Component {
         } else {
             let dataSearch = this.props.products.filter(item => item.nama.toLowerCase().includes(this.search.value.toLowerCase()))
             this.setState({ openSearch: dataSearch.length > 0 ? true : false, dataSearch }, () => console.log("data search: ", this.state.dataSearch))
+
         }
     }
 
@@ -54,29 +56,6 @@ class NavbarComp extends React.Component {
         this.setState({ openCart: !this.state.openCart })
     }
 
-    // componentDidMount(){
-    //     this.cartMerged()
-    // }
-    // cartMerged = () => {
-    //     let arr = [...this.props.cart]
-    //     let merged = arr.reduce((acc, cur) => {
-    //         let nama = cur.nama
-    //         let type = cur.type
-    //         let found = acc.find((elem) => {
-    //             if (elem.nama === nama && elem.type === type) {
-    //                 return [nama, type]
-    //             }
-    //         });
-    //         if (found) {
-    //             // console.log("found",found)
-    //             found.qty += cur.qty;
-    //         } else {
-    //             acc.push(cur);
-    //         }
-    //         return acc;
-    //     }, []);
-    //     return merged
-    // }
 
     printShowCart = () => {
         return this.props.cart.map((item, index) => {
@@ -85,101 +64,52 @@ class NavbarComp extends React.Component {
             )
         })
     }
+
+    openNav = () =>{
+        alert("hai!")
+    }
     render() {
         return (
-            <div className="container-fluid" style={{ fontSize: '11px' }}>
-                <div className="d-flex justify-content-between" style={{ width: '100%', height: '30px' }}>
-                    <ul type="none" className="d-flex justify-content-between m-1" style={{ color: '#717a82e' }}>
-                        <li className="nav-link" >Indonesia</li>
-                        <li className="nav-link">
-                            <Link className="d-flex inline-flex black-ikea">
-                                <span className="material-icons" style={{ position: 'relative', bottom: '4px' }}>public</span>
-                                <span>Bahasa</span>
-                            </Link>
-                        </li>
-                    </ul>
-                    <ul type="none" className="d-flex justify-content-between m-1" >
-                        <li className="nav-link">
-                            <Link className="d-flex inline-flex blue-ikea">
-                                <span className="material-icons" style={{ position: 'relative', bottom: '4px' }}>
-                                    room
-                            </span>
-                                <span>
-                                    Informasi Toko
-                            </span>
-                            </Link>
-                        </li>
-                        <li className="nav-link" >
-                            <Link className="blue-ikea">Kebijakan Pengembalian</Link>
-                        </li>
-                        <li className="nav-link blue-ikea" ><Link>IKEA Bisnis</Link></li>
-                        <li className="nav-link" >
-                            <Link className="d-flex inline-flex blue-ikea">
-                                <span className="material-icons" style={{ position: 'relative', bottom: '4px' }}>
-                                    room
-                            </span>
-                                <span>
-                                    Lacak Pengiriman Online
-                            </span>
-                            </Link>
-                        </li>
-                        <li className="nav-link blue-ikea" ><Link>Katalog dan Brosur</Link></li>
-                        <li className="nav-link blue-ikea" ><Link>Program Perencanaan</Link></li>
-                    </ul>
-                    <ul className="d-flex justify-content-between m-">
-                        <li className="nav-link">
-                            <Link to="/client" className='blue-ikea'>Masuk atau Daftar</Link>
-                        </li>
-                    </ul>
-                </div>
-                <hr />
-                <Navbar expand="md" style={{ backgroundColor: "white", fontSize: '14px' }}>
+            <div className="container-fluid" style={{ fontSize: '11px', width: '100%', height: 'auto' }}>
+                {/* NEW NAVBAR */}
+                <div style={{ display: 'flex', padding: 'auto', alignItems: 'center', marginTop: '5vh' }}>
+                    <span class="material-icons-outlined mx-4">menu</span>
                     <Link to='/'>
                         <NavbarBrand>
                             <img width="100px" src="https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/logos/IKEA_logo.svg" />
                         </NavbarBrand>
                     </Link>
-
-                    {/* Buka tutup navbar */}
-                    <NavbarToggler onClick={this.toggle} />
-                    <Collapse isOpen={this.state.IsOpen} navbar>
-                        <Nav className="mr-auto" navbar>
-                            <NavItem>
-                                <Link to="/products" style={{ color: 'black', fontWeight: 'bold' }} className="nav-link">Products</Link>
-                            </NavItem>
-                            <UncontrolledDropdown nav inNavbar>
-                                <DropdownToggle nav caret style={{ color: 'gray', fontWeight: 'bold' }}>
-                                    Category
-                            </DropdownToggle>
-                                <DropdownMenu right>
-                                    <DropdownItem>
-                                        Option 1
-                                </DropdownItem>
-                                    <DropdownItem>
-                                        Option 2
-                                </DropdownItem>
-                                    <DropdownItem divider />
-                                    <DropdownItem>
-                                        Reset
-                                </DropdownItem>
-                                </DropdownMenu>
-                            </UncontrolledDropdown>
-                        </Nav>
-                        <InputGroup size="sm" style={{ width: '20%' }}>
-                            <Input placeholder="Cari..." onChange={this.handleSearch} innerRef={el => this.search = el} />
-                            <InputGroupAddon addonType="append">
-                                <Dropdown isOpen={this.state.openSearch} toggle={this.handleSearch}>
-                                    <DropdownToggle className="btn btn-secondary material-icons" >
-                                        search
-                                    </DropdownToggle>
-                                    <DropdownMenu right>
-                                        {this.printSearch()}
-                                    </DropdownMenu>
-                                </Dropdown>
-                            </InputGroupAddon>
+                    <Link className="mx-3 d-flex" to="/products" style={{ height: '10vh', alignItems: 'center', fontSize: 14, color: 'black', fontWeight: 'bold' }}>Products</Link>
+                    <Link className="mx-3 d-flex" style={{ height: '10vh', alignItems: 'center', fontSize: 14, color: 'black', fontWeight: 'bold' }}>Rooms</Link>
+                    <Link className="mx-3 d-flex" style={{ height: '10vh', alignItems: 'center', fontSize: 14, color: 'black', fontWeight: 'bold' }}>Deals</Link>
+                    {/* SEARCH INPUT */}
+                    <div className="d-flex align-items-center mx-4" style={{ borderRadius: '30px', backgroundColor: '#f5f5f5', height: '54px', width: '30vw' }}>
+                        <span class="material-icons md-48" style={{ margin: 10 }}>search</span>
+                        <InputGroup style={{ width: '100%', display: 'flex', flexDirection: 'row' }}>
+                            <Input placeholder="What are you looking for?" type="search"
+                                style={{ border: 'none', backgroundColor: '#f5f5f5', height: 'auto', width: '100%', boxShadow: 'none' }}
+                                onChange={this.handleSearch} innerRef={el => this.search = el}
+                            />
                         </InputGroup>
-
-
+                        <Dropdown isOpen={this.state.openSearch} toggle={this.handleSearch} style={{ border: 'none', width: '0%' }}>
+                            <DropdownToggle style={{ backgroundColor: 'transparent', border: 'none' }}></DropdownToggle>
+                            <DropdownMenu right style={{width: '20vw'}}>
+                                {this.printSearch()}
+                            </DropdownMenu>
+                        </Dropdown>
+                        <div className='round-bg  material-icons m-3'>
+                            photo_camera
+                        </div>
+                    </div>
+                    <div className="d-flex align-items-center border p-2" style={{ borderRadius: '30px' }}>
+                        <span className="material-icons">
+                            location_on
+                        </span>
+                        <span className="mx-2">Indonesia</span>
+                    </div>
+                    <span className="material-icons-outlined mx-3 round-bg">local_shipping</span>
+                    <span class="material-icons-outlined mx-3 round-bg" style={{ textDecorationLine: 'none', color: 'black' }} onClick={this.openNav}>person</span>
+                    <div>
                         {
                             this.props.username &&
                             <UncontrolledDropdown>
@@ -188,7 +118,7 @@ class NavbarComp extends React.Component {
                                 </DropdownToggle>
                                 <DropdownMenu right>
                                     {
-                                        this.props.role === "user" ?
+                                        this.props.role === "User" ?
                                             <>
                                                 <DropdownItem>
                                                     Profile
@@ -224,40 +154,160 @@ class NavbarComp extends React.Component {
                                 </DropdownMenu>
                             </UncontrolledDropdown>
                         }
-
-                        <div className="d-flex" >
-                            <span className="material-icons m-1">
-                                shopping_cart
-                                    </span>
-                            <h5>
-                                {/* <Badge color="warning" className="m-auto">
+                    </div>
+                    <div className="material-icons-outlined mx-3 round-bg">favorite_border</div>
+                    <div className="d-flex mx-3 align-items-center justify-content-center" >
+                        <Link to="/cart" style={{ textDecorationLine: 'none', color: 'black' }} className="material-icons m-1 round-bg">shopping_cart</Link>
+                        <h6>
+                            {/* <Badge color="warning" className="m-auto">
                                 </Badge> */}
-                                <Dropdown isOpen={this.state.openCart} toggle={this.showCart}>
-                                    {
-                                        this.props.username &&
-                                        <>
-                                            <DropdownToggle color="warning" className="m-auto" size="sm" >
-                                                {this.getAllQty()}
-                                            </DropdownToggle>
-                                            <DropdownMenu right>
-                                                {this.printShowCart()}
-                                            </DropdownMenu>
-                                        </>
+                            <Dropdown isOpen={this.state.openCart} toggle={this.showCart}>
+                                {
+                                    this.props.username &&
+                                    <>
+                                        <DropdownToggle color="warning" className="m-auto" size="sm" >
+                                            {this.getAllQty()}
+                                        </DropdownToggle>
+                                        <DropdownMenu right>
+                                            {this.printShowCart()}
+                                        </DropdownMenu>
+                                    </>
+                                }
+                            </Dropdown>
+                        </h6>
+                    </div>
 
-                                    }
-                                </Dropdown>
-                            </h5>
-                        </div>
+                </div>
+                {/* 
+                OLD NAVBAR --->>
+                <div className="d-flex border" style={{ width: '100%', height: '5vh', fontSize: '10px' }}>
+                    <ul type="none" className=" d-flex justify-content-between" style={{ width: '15%', color: '#717a82e' }}>
+                        <li className="nav-link" >Indonesia</li>
+                        <li className="nav-link">
+                            <Link className="d-flex inline-flex black-ikea">
+                                <span className="material-icons" style={{ position: 'relative', bottom: '4px' }}>public</span>
+                                <span>Bahasa</span>
+                            </Link>
+                        </li>
+                    </ul>
+                    <ul type="none" className="d-flex" style={{ width: '70%', height: '10%' }}>
+                        <li className="nav-link">
+                            <Link className="d-flex inline-flex blue-ikea">
+                                <span className="material-icons" style={{ position: 'relative', bottom: '4px' }}>
+                                    room
+                            </span>
+                                <span>
+                                    Informasi Toko
+                            </span>
+                            </Link>
+                        </li>
+                        <li className="nav-link" >
+                            <Link className="blue-ikea">Kebijakan Pengembalian</Link>
+                        </li>
+                        <li className="nav-link blue-ikea" ><Link>IKEA Bisnis</Link></li>
+                        <li className="nav-link" >
+                            <Link className="d-flex inline-flex blue-ikea">
+                                <span className="material-icons" style={{ position: 'relative', bottom: '4px' }}>
+                                    room
+                            </span>
+                                <span>
+                                    Lacak Pengiriman Online
+                            </span>
+                            </Link>
+                        </li>
+                        <li className="nav-link blue-ikea" ><Link>Katalog dan Brosur</Link></li>
+                        <li className="nav-link blue-ikea" ><Link>Program Perencanaan</Link></li>
+                    </ul>
+                    <ul className="p-0" style={{ width: '15%', height: '10%' }}>
+                        <li className="nav-link" style={{ width: '100%', float: 'right' }}>
+                            <Link to="/client" className='blue-ikea'>Masuk atau Daftar</Link>
+                        </li>
+                    </ul>
+                </div> */}
+                {/* <div className="row d-flex justify-content-center"> */}
+                {/* <Navbar expand="md" style={{ backgroundColor: "white", fontSize: '14px', width: '100%', height: 'auto' }}> */}
+                {/* <Link to='/'>
+                            <NavbarBrand>
+                                <img width="100px" src="https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/logos/IKEA_logo.svg" />
+                            </NavbarBrand>
+                        </Link> */}
+
+                {/* Buka tutup navbar */}
+                {/* <NavbarToggler onClick={this.toggle} /> */}
+                {/* <Collapse isOpen={this.state.IsOpen} navbar> */}
+                {/* <Nav className="mr-auto" navbar>
+                                <NavItem>
+                                    <Link to="/products" style={{ color: 'black', fontWeight: 'bold' }} className="nav-link">Products</Link>
+                                </NavItem>
+                                <UncontrolledDropdown nav inNavbar>
+                                    <DropdownToggle nav caret style={{ color: 'gray', fontWeight: 'bold' }}>
+                                        Category
+                            </DropdownToggle>
+                                    <DropdownMenu right>
+                                        <DropdownItem>
+                                            Option 1
+                                </DropdownItem>
+                                        <DropdownItem>
+                                            Option 2
+                                </DropdownItem>
+                                        <DropdownItem divider />
+                                        <DropdownItem>
+                                            Reset
+                                </DropdownItem>
+                                    </DropdownMenu>
+                                </UncontrolledDropdown>
+                            </Nav> */}
+                {/* <InputGroup size="sm" style={{ width: '20%' }}>
+                                <Input placeholder="Cari..." onChange={this.handleSearch} innerRef={el => this.search = el} />
+                                <InputGroupAddon addonType="append">
+                                    <Dropdown isOpen={this.state.openSearch} toggle={this.handleSearch}>
+                                        <DropdownToggle className="btn btn-secondary material-icons" >
+                                            search
+                                    </DropdownToggle>
+                                        <DropdownMenu right>
+                                            {this.printSearch()}
+                                        </DropdownMenu>
+                                    </Dropdown>
+                                </InputGroupAddon>
+                            </InputGroup> */}
 
 
-                        {/* <div className="d-flex" onClick={this.showCart}>
+
+
+                {/* <div className="d-flex" >
+                                <span className="material-icons m-1">
+                                    shopping_cart
+                                    </span>
+                                <h5>
+                                    <Badge color="warning" className="m-auto">
+                                </Badge>
+                                    <Dropdown isOpen={this.state.openCart} toggle={this.showCart}>
+                                        {
+                                            this.props.username &&
+                                            <>
+                                                <DropdownToggle color="warning" className="m-auto" size="sm" >
+                                                    {this.getAllQty()}
+                                                </DropdownToggle>
+                                                <DropdownMenu right>
+                                                    {this.printShowCart()}
+                                                </DropdownMenu>
+                                            </>
+
+                                        }
+                                    </Dropdown>
+                                </h5>
+                            </div> */}
+
+
+                {/* <div className="d-flex" onClick={this.showCart}>
                             <span className="material-icons m-1">
                                 shopping_cart
                                 </span>
                             <h5><Badge color="warning" className="m-auto">{this.getAllQty()}</Badge></h5>
                         </div> */}
-                    </Collapse>
-                </Navbar>
+                {/* </Collapse> */}
+                {/* </Navbar>
+                </div> */}
             </div>
         );
     }

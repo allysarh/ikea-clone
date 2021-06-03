@@ -1,79 +1,101 @@
 import axios from 'axios';
 import React from 'react';
 import { connect } from 'react-redux'
-import { Table } from 'reactstrap';
+import { Table, Button } from 'reactstrap';
 import { getTransactionAction } from '../action'
+import ModalHistory from '../components/ModalHistory';
 import { URL_API } from '../Helper';
 
 class HistoryPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            transactionsHistory: []
+            transactionsHistory: [],
+            modal: false,
+            dataHistory: []
+
         }
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.getTransactionsHistory()
     }
-    getTransactionsHistory = () =>{
-        axios.get(URL_API + `/transactions`)
-        .then((res) =>{
-            console.log("respon data transaksi", res.data)
-            this.setState({transactionsHistory: res.data})
-        })
-        .catch((err) =>{
-            console.log("erro get transaction history", err)
-        })
+    getTransactionsHistory = async () => {
+        try {
+            let res = await axios.get(URL_API + `/transactions/get-trans/${this.props.id}`)
+            this.setState({ transactionsHistory: res.data }, () => console.log(this.state.transactionsHistory))
+        } catch (error) {
+            console.log(error)
+        }
+        
     }
-    printHistory = () =>{
+
+    onBtnDetail = (item) => {
+        console.log(item)
+        this.toggle()
+        this.setState({ dataHistory: item })
+    }
+
+    toggle = () => {
+        this.setState({ modal: !this.state.modal })
+    }
+
+    printHistory = () => {
         // console.log(this.props.transactions)
-        let historyUser =  this.state.transactionsHistory.filter(e => e.idUser === this.props.idUser)
-        return historyUser.map((item, index) =>{
-            return(
+        let historyUser = this.state.transactionsHistory.filter(e => e.id === this.props.id)
+        return historyUser.map((item, index) => {
+            return (
                 <tr>
                     <td>{item.date}</td>
                     <td>
                         {
-                            item.cart.map((item, index) =>{
+                            item.transactionDetail.map((i, index) => {
                                 return (
                                     <div className="d-flex">
-                                        <img src={item.image} style={{height: '10vh', margin: '3%'}}/>
+                                        {/* <img src={i.image} style={{height: '10vh', margin: '3%'}}/> */}
                                         <div className="d-flex flex-column">
-                                            <span>{item.nama}</span>
-                                            <span>{item.type}</span>
-                                            <span>{item.qty} x {item.harga}</span>
+                                            <span>{i.nama}</span>
+                                            <span>{i.type}</span>
+                                            <span>{i.qty} x {i.harga}</span>
                                         </div>
                                     </div>
                                 )
                             })
                         }
                     </td>
-                    <td>{item.statusPaid}</td>
-                    <td>Rp. {item.totalPayment.toLocaleString()}</td>
+                    <td>{item.status}</td>
+                    <td>Rp. {item.total_payment.toLocaleString()}</td>
+                    <td>
+                        <Button onClick={() => this.onBtnDetail(item)}>Detail</Button>
+
+                    </td>
                 </tr>
             )
         })
     }
     render() {
-        
+
         return (
             <>
-                <h1 style={{textAlign: 'center'}}>Your History</h1>
+                <h1 style={{ textAlign: 'center' }}>Your History</h1>
                 <h6>{this.props.transactions.username}</h6>
                 <div>
                     <Table >
-                        <thead style={{fontWeight: 'bolder'}}>
+                        <thead style={{ fontWeight: 'bolder' }}>
                             <td>Tanggal</td>
                             <td>Produk</td>
                             <td>Status</td>
                             <td>Total Harga</td>
+                            <td>Action</td>
                         </thead>
                         <tbody>
                             {this.printHistory()}
                         </tbody>
                     </Table>
                 </div>
+                {/* MODAL */}
+                <ModalHistory modal={this.state.modal} toggle={this.toggle} dataHistory={this.state.dataHistory}/>
+
             </>
         );
     }
@@ -81,7 +103,7 @@ class HistoryPage extends React.Component {
 
 const mapStateToProps = ({ authReducer, TransactionsReducer }) => {
     return {
-        idUser: authReducer.id,
+        id: authReducer.id,
         transactions: TransactionsReducer.transaction_list
     }
 }

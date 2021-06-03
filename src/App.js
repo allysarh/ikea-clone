@@ -28,6 +28,7 @@ class App extends React.Component {
 
   reLogin = () => {
     let idToken = localStorage.getItem("tkn_id")
+    console.log("id token", idToken)
     if (idToken) {
       axios.post(URL_API + `/users/keep`, {
         id: idToken

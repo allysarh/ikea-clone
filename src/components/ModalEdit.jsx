@@ -41,7 +41,7 @@ class ModalEdit extends React.Component {
         if (this.props.stok) {
             return this.props.images.map((item, index) => {
                 return <>
-                    <Input type="text" defaultValue={item} className="m-1" onChange={(e) => this.handleImage(e, index)} />
+                    <Input type="text" defaultValue={item.images} className="m-1" onChange={(e) => this.handleImage(e, index)} />
                     <Col xs="2">
                         <span className="material-icons btn btn-outline-danger" style={{ float: 'right' }} onClick={() => this.onBtnDeleteImages(index)}>
                             remove
@@ -97,7 +97,7 @@ class ModalEdit extends React.Component {
     }
 
     handleImage = (e, index) => {
-        this.props.images[index] = e.target.value
+        this.props.images[index].images = e.target.value
     }
 
     handleStok = (e, index) => {
@@ -116,20 +116,15 @@ class ModalEdit extends React.Component {
         let stok = this.props.stok
         let images = this.props.images
         let harga = parseInt(this.editHarga.value)
-        // console.log(nama, deskripsi, brand, kategori, harga)
-        // console.table("gambar", images)
-        // console.table("stok", stok)
-        // console.table(images)
-        // console.log("id", this.props.dataEdit.id)
-
-        axios.patch(URL_API + `/products/update/${this.props.dataEdit.idProduk}`,
-            { nama, deskripsi, images, stok, brand, harga })
+        let idstatus = 1
+        
+        axios.patch(URL_API + `/products/update`,
+            { idProduk: this.props.dataEdit.idProduk, nama, deskripsi, images, stok, brand, harga, idstatus })
             .then(res => {
                 // this.setState({ selectedIndex: null })
                 this.props.updateProducts(res.data)
                 console.log("res data patch:", res.data)
                 this.props.toggle()
-
             })
             .catch(err => console.log(err))
 

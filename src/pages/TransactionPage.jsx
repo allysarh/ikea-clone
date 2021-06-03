@@ -12,40 +12,48 @@ class TransactionPage extends React.Component {
         this.state = {
             transactions: [],
             modal: false,
-            dataCart: []
+            dataDetail: [],
+            dataTransakiDetail: []
         }
     }
 
     componentDidMount() {
-        this.getTransactions()
+        this.props.getTransactionAction(0)
     }
-    getTransactions = () => {
-        axios.get(URL_API + `/transactions`)
-            .then((res) => {
-                console.log("res transactions", res.data)
-                this.setState({ transactions: res.data })
-                this.props.getTransactionAction(res.data)
-            })
-            .catch((err) => {
-                console.log(err)
-            })
-    }
+
     toggle = () => {
         this.setState({ modal: !this.state.modal })
     }
+
+    onBtnConfirm = async (id) => {
+        try {
+            console.log("idtrans", id)
+            let res = await axios.patch(URL_API + `/transactions/update-trans/${id}`, {
+                idstatus: 8
+            })
+            console.log(res.data)
+            this.props.getTransactionAction(0)
+        } catch (error) {
+            console.log(error)
+        }
+    }
     printTransaction = () => {
-        if (this.state.transactions.length > 0) {
-            let { transactions } = this.state
-            return transactions.map((item, index) => {
+        let { dataTrans } = this.props
+        console.log("datatransa", dataTrans)
+        if (dataTrans.length > 0) {
+            return dataTrans.map((item, index) => {
                 return (
                     <tr>
                         <td>{index + 1}</td>
-                        <td>{item.username}</td>
+                        <td>{item.id}</td>
                         <td>{item.date}</td>
-                        <td>{item.statusPaid}</td>
+                        <td>{item.status}</td>
                         <td>
-                            <Button onClick={() => this.setState({ dataCart: item.cart, modal: !this.state.modal })}>
+                            <Button color="warning" onClick={() => this.setState({ dataDetail: item, modal: !this.state.modal })}>
                                 Detail
+                            </Button>
+                            <Button className="mx-3" color="success" disabled={item.status == "Unpaid" && true} onClick={() => this.onBtnConfirm(item.idtransaction)}>
+                                Confirm
                             </Button>
                         </td>
                     </tr>
@@ -63,14 +71,14 @@ class TransactionPage extends React.Component {
         return (
             <Container fluid>
                 <h1 style={{ textAlign: 'center' }}>Users Transaction Page</h1>
-                <div style={{ width: '100%' }}>
-                    <Table >
-                        <thead>
+                <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+                    <Table style={{ textAlign: 'center', width: '80%' }}>
+                        <thead style={{ fontWeight: 'bolder', backgroundColor: '#f5f5f5' }}>
                             <td>No</td>
-                            <td>Username</td>
+                            <td>ID user</td>
                             <td>Date</td>
                             <td>Status</td>
-                            <td>Action</td>
+                            <td >Action</td>
                         </thead>
                         <tbody>
                             {this.printTransaction()}
@@ -79,15 +87,16 @@ class TransactionPage extends React.Component {
                 </div>
 
                 {/* modal */}
-                <ModalDetailTrans modal={this.state.modal} toggle={this.toggle} cart={this.state.dataCart} />
+                <ModalDetailTrans modal={this.state.modal} toggle={this.toggle} dataDetail={this.state.dataDetail} dataTrans={this.state.dataTransakiDetail} />
             </Container>
         );
     }
 }
 
-const mapStateToProps = ({ authReducer }) => {
+const mapStateToProps = ({ authReducer, TransactionsReducer }) => {
     return {
-        id: authReducer.id
+        id: authReducer.id,
+        dataTrans: TransactionsReducer.transaction_list
     }
 }
 export default connect(mapStateToProps, { getTransactionAction })(TransactionPage);
