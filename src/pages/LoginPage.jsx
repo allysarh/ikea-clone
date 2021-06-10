@@ -2,12 +2,13 @@
 
 import Axios from 'axios';
 import React from 'react';
-import { Col, FormGroup, Label, Row, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Container, Button, Alert } from 'reactstrap';
+import { Col, FormGroup, Label, Row, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Container, Button, Alert, Spinner } from 'reactstrap';
 import BreadcrumbComp from '../components/BreadcrumbComp';
 import { URL_API } from '../Helper';
 import { connect } from 'react-redux'
 import { authLogin } from '../action'
-import { Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+import axios from 'axios';
 
 
 class LoginPage extends React.Component {
@@ -19,7 +20,10 @@ class LoginPage extends React.Component {
             message: '',
             alertType: '',
             verifEmail: false,
-            confPass: true
+            confPass: true,
+            alertLogin: false,
+            verifUlang: false,
+            loading: false
         }
     }
     handlePassword = (value) => {
@@ -139,7 +143,22 @@ class LoginPage extends React.Component {
         //     .catch((err) => {
         //         console.log("login error", err)
         //     })
+
         this.props.authLogin(this.inEmail.value, this.inPassword.value)
+        if (this.props.status) {
+            this.setState((state, props) => ({
+                alertLogin: !this.state.alertLogin,
+            }))
+            
+        }
+        else {
+            this.setState((state, props) => ({
+                alertLogin: !this.state.alertLogin,
+            }))
+            setTimeout(() => this.setState({ alertLogin: !this.state.alertLogin }), 7000)
+
+        }
+
 
     }
 
@@ -153,6 +172,22 @@ class LoginPage extends React.Component {
 
     // PASSWORD REGEX
 
+    //VERIFIKASI ULANG
+    verfikasiUlang = async () => {
+        try {
+            this.setState({ loading: true })
+            await axios.post(URL_API + `/users/verif-ulang`, {
+                email: this.inEmail.value, password: this.inPassword.value
+            })
+            this.setState({ loading: false })
+
+            this.setState({alertLogin: !this.state.alertLogin})
+            this.setState({ verifUlang: !this.state.verifUlang })
+            setTimeout(() => this.setState({ verifUlang: !this.state.verifUlang }), 4000)
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     render() {
         // normal
@@ -172,6 +207,19 @@ class LoginPage extends React.Component {
                 <Row className="d-flex justify-content-center">
                     {/* LOGIN */}
                     <Col xs='4' className="d-flex flex-column justify-content-center " style={{ marginBottom: "10%" }}>
+                        <Alert color={this.props.status ? "warning" : "danger"} isOpen={this.state.alertLogin}>
+                            {this.props.status ? "Akun belum diverifikasi. " : "Email atau password anda salah. Pastikan akun anda telah terdaftar"}
+                            {this.props.status &&
+                                <span style={{ fontWeight: 'bold', cursor: 'pointer' }} onClick={this.verfikasiUlang}>Verifikasi Ulang</span>
+                            }
+                            {
+                                this.state.loading &&
+                                <Spinner size="sm" color="primary" />
+                            }
+                        </Alert>
+                        <Alert color="success" isOpen={this.state.verifUlang}>
+                            Verifikasi ulang berhasil. Silahkan cek kembali email anda.
+                        </Alert>
                         <div className="m-3">
                             <h4>Silahkan masuk ke akun Anda</h4>
                             <p>Silakan masuk ke akun Anda untuk menyelesaikan pembayaran dengan data pribadi anda</p>
@@ -300,7 +348,8 @@ class LoginPage extends React.Component {
 
 const mapStateToProps = ({ authReducer }) => {
     return {
-        id: authReducer.id
+        id: authReducer.id,
+        status: authReducer.status
     }
 }
 //1: ngambil data(map state to props), 2: hubungin dengan action (data -> action)

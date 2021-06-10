@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button, Container, Row, Table } from 'reactstrap';
+import { Badge, Button, Container, Row, Table } from 'reactstrap';
 import ModalDetailTrans from '../components/ModalDetailTrans';
 import { URL_API } from '../Helper';
 import { getTransactionAction } from '../action'
@@ -45,14 +45,16 @@ class TransactionPage extends React.Component {
                 return (
                     <tr>
                         <td>{index + 1}</td>
-                        <td>{item.id}</td>
+                        <td>{item.username}</td>
                         <td>{item.date}</td>
-                        <td>{item.status}</td>
                         <td>
-                            <Button color="warning" onClick={() => this.setState({ dataDetail: item, modal: !this.state.modal })}>
+                            {item.status}
+                        </td>
+                        <td>
+                            <Button onClick={() => this.setState({ dataDetail: item, modal: !this.state.modal })}>
                                 Detail
                             </Button>
-                            <Button className="mx-3" color="success" disabled={item.status == "Unpaid" && true} onClick={() => this.onBtnConfirm(item.idtransaction)}>
+                            <Button className="mx-3" style={{ backgroundColor: '#427ab3' }} disabled={item.status == "Unpaid" && true} onClick={() => this.onBtnConfirm(item.idtransaction)}>
                                 Confirm
                             </Button>
                         </td>
@@ -75,7 +77,7 @@ class TransactionPage extends React.Component {
                     <Table style={{ textAlign: 'center', width: '80%' }}>
                         <thead style={{ fontWeight: 'bolder', backgroundColor: '#f5f5f5' }}>
                             <td>No</td>
-                            <td>ID user</td>
+                            <td>User</td>
                             <td>Date</td>
                             <td>Status</td>
                             <td >Action</td>

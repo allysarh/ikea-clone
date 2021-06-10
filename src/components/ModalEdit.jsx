@@ -11,6 +11,7 @@ class ModalEdit extends React.Component {
         this.state = {
             stok: props.dataEdit.stok,
             images: props.dataEdit.images,
+            kategori: []
 
         }
     }
@@ -117,7 +118,7 @@ class ModalEdit extends React.Component {
         let images = this.props.images
         let harga = parseInt(this.editHarga.value)
         let idstatus = 1
-        
+
         axios.patch(URL_API + `/products/update`,
             { idProduk: this.props.dataEdit.idProduk, nama, deskripsi, images, stok, brand, harga, idstatus })
             .then(res => {
@@ -131,9 +132,19 @@ class ModalEdit extends React.Component {
     }
 
 
+    printKategori = () => {
+        return this.props.kategori.map(item => {
+            return (
+                <>
+                    <option value={item.idkategori}>{item.kategori}</option>
+                </>
+            )
+        })
+    }
+
     //PRINT STOK
     render() {
-        console.log("props data edit", this.props.dataEdit)
+        console.log("props data edit", this.printKategori())
         return (
             <>
                 <Modal isOpen={this.props.modalEdit} toggle={this.onBtnCancel}>
@@ -154,7 +165,11 @@ class ModalEdit extends React.Component {
                             </FormGroup>
                             <FormGroup>
                                 <Label >Kategori</Label>
-                                <Input type="text" name="email" placeholder="Masukan kategori produk..." innerRef={element => this.editKategori = element} defaultValue={this.props.dataEdit.kategori} />
+                                {/* <Input type="text" name="email" placeholder="Masukan kategori produk..." innerRef={element => this.editKategori = element} defaultValue={this.props.dataEdit.kategori} /> */}
+                                <Input type="select" name="select" id="exampleSelect">
+                                <option selected disabled value="">Kategori</option>
+                                    {this.printKategori()}
+                                </Input>
                             </FormGroup>
                             {/* Ini buat stok 👇🏼*/}
                             <FormGroup>

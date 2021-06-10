@@ -5,6 +5,7 @@ import CarouselProduct from '../components/CarouselProduct';
 import { connect } from 'react-redux'
 import { getProductAction } from '../action'
 import CardProducts from '../components/CardProducts';
+import Sidebar from '../components/Sidebar';
 
 class LandingPage extends React.Component {
     constructor(props) {
@@ -33,6 +34,7 @@ class LandingPage extends React.Component {
     render() {
         return (
             <Container fluid style={{width: '100%'}}>
+                <Sidebar />
                 <PrintCarousel />
                 <CarouselProduct isi={this.printProduk()} />
 

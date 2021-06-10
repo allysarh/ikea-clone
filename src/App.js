@@ -18,6 +18,7 @@ import ShoppingCartPage from './pages/ShoppingCartPage';
 import TransactionPage from './pages/TransactionPage';
 import CheckOutPage from './pages/CheckOutPage';
 import HistoryPage from './pages/HistoryPage';
+import VerifPage from './pages/VerifPage';
 
 // page utama: app.js, ketika di refresh, app.js pasti merefresh
 class App extends React.Component {
@@ -69,6 +70,8 @@ class App extends React.Component {
           <Route path="/products" component={ProductsPage} />
           <Route path="/products-detail" component={ProductDetail} />
           <Route path="/shopping-cart" component={ShoppingCartPage} />
+          <Route poth="/verif-page" component={VerifPage}/>
+          
           {
             this.props.role === "Admin" &&
             <>
@@ -84,7 +87,6 @@ class App extends React.Component {
             </>
           }
           <Route path="*" component={NotFoundPage} />
-
         </Switch>
         <FooterComp />
       </>

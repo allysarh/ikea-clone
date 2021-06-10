@@ -26,10 +26,25 @@ class ProductManagePage extends React.Component {
             images: [],
             thumbnail: 0,
             order: '',
-            dataEdit: {}
+            dataEdit: {},
+            kategori: []
         }
     }
 
+    componentDidMount() {
+        this.getKategori()
+    }
+    
+    getKategori = async () =>{
+        try {
+            let kategori = await axios.get(URL_API + `/products/kategori`)
+            console.log("kategori: ",kategori.data)
+            this.setState({ kategori: await kategori.data })
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
     // getDataProduk = () => {
     //     axios.get(URL_API + `/products`)
     //         .then((res) => {
@@ -77,6 +92,7 @@ class ProductManagePage extends React.Component {
         console.log("data produk", this.props.products)
 
         return this.props.products.map((item, index) => {
+            // console.log("kategori", item.kategori.map(a => a.kategori))
             return (
                 <tr>
                     <td>{index + 1}</td>
@@ -104,7 +120,7 @@ class ProductManagePage extends React.Component {
                     </td>
                     <td>{item.deskripsi}</td>
                     <td>{item.brand}</td>
-                    <td>{item.kategori}</td>
+                    <td>{item.kategori.length > 0 ? item.kategori[0].kategori : 'None'}</td>
 
                     {/* render tipe data array of object */}
                     <td>
@@ -449,13 +465,14 @@ class ProductManagePage extends React.Component {
                 </div>
 
 
-                <ModalComp toggle={this.toggle} modal={this.state.modal} />
+                <ModalComp toggle={this.toggle} modal={this.state.modal} kategori={this.state.kategori}/>
                 <ModalEdit
                     modalEdit={this.state.modalEdit}
                     dataEdit={this.state.dataEdit}
                     toggle={this.toggleEdit}
                     stok={this.state.dataEdit.stok}
                     images={this.state.dataEdit.images}
+                    kategori={this.state.kategori}
                 />
                 {/* TABEL */}
                 <div>

@@ -59,8 +59,8 @@ class ModalDetailTrans extends React.Component {
                             <span>Invoice: {invoice}</span>
                             <span>Note: {note}</span>
                         </div>
-                        <Table>
-                            <thead>
+                        <Table hover size="sm">
+                            <thead >
                                 <td>Produk</td>
                                 <td>Jumlah</td>
                                 <td>Subtotal</td>

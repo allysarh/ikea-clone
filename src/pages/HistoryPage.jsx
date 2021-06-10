@@ -18,17 +18,18 @@ class HistoryPage extends React.Component {
     }
 
     componentDidMount() {
-        this.getTransactionsHistory()
+        // this.getTransactionsHistory()
+        this.props.getTransactionAction(this.props.id)
     }
-    getTransactionsHistory = async () => {
-        try {
-            let res = await axios.get(URL_API + `/transactions/get-trans/${this.props.id}`)
-            this.setState({ transactionsHistory: res.data }, () => console.log(this.state.transactionsHistory))
-        } catch (error) {
-            console.log(error)
-        }
+    // getTransactionsHistory = async () => {
+    //     try {
+    //         let res = await axios.get(URL_API + `/transactions/get-trans/${this.props.id}`)
+    //         this.setState({ transactionsHistory: res.data }, () => console.log(this.state.transactionsHistory))
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
         
-    }
+    // }
 
     onBtnDetail = (item) => {
         console.log(item)
@@ -41,9 +42,9 @@ class HistoryPage extends React.Component {
     }
 
     printHistory = () => {
-        // console.log(this.props.transactions)
-        let historyUser = this.state.transactionsHistory.filter(e => e.id === this.props.id)
-        return historyUser.map((item, index) => {
+        console.log(`transaksi:`,this.props.transactions)
+        // let historyUser = this.state.transactionsHistory.filter(e => e.id === this.props.id)
+        return this.props.transactions.map((item, index) => {
             return (
                 <tr>
                     <td>{item.date}</td>

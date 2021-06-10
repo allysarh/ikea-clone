@@ -9,6 +9,7 @@ import { connect } from 'react-redux'
 import { authLogout } from '../action'
 import axios from 'axios'
 import { URL_API } from '../Helper';
+import Sidebar from './Sidebar';
 
 // import { authLogin } from '../action'
 
@@ -72,7 +73,7 @@ class NavbarComp extends React.Component {
         return (
             <div className="container-fluid" style={{ fontSize: '11px', width: '100%', height: 'auto' }}>
                 {/* NEW NAVBAR */}
-                <div style={{ display: 'flex', padding: 'auto', alignItems: 'center', marginTop: '5vh' }}>
+                <div style={{ display: 'flex', padding: 'auto', alignItems: 'center', marginTop: '2vh' }}>
                     <span class="material-icons-outlined mx-4">menu</span>
                     <Link to='/'>
                         <NavbarBrand>
@@ -108,7 +109,7 @@ class NavbarComp extends React.Component {
                         <span className="mx-2">Indonesia</span>
                     </div>
                     <span className="material-icons-outlined mx-3 round-bg">local_shipping</span>
-                    <span class="material-icons-outlined mx-3 round-bg" style={{ textDecorationLine: 'none', color: 'black' }} onClick={this.openNav}>person</span>
+                    <Link to="/client" class="material-icons-outlined mx-3 round-bg" style={{ textDecorationLine: 'none', color: 'black' }}>person</Link>
                     <div>
                         {
                             this.props.username &&
@@ -176,7 +177,7 @@ class NavbarComp extends React.Component {
                             </Dropdown>
                         </h6>
                     </div>
-
+                    
                 </div>
                 {/* 
                 OLD NAVBAR --->>

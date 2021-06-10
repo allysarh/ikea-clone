@@ -85,13 +85,12 @@ class ShoppingCartPage extends React.Component {
         }).reduce((a, b) => a + b, 0)
     }
     printCart = () => {
-        
         return this.props.cart.map((item, index) => {
             return (
                 <tr>
                     <td>
                         <div className="d-flex ">
-                            <img src={item.image} height="150vh" />
+                            <img src={item.images[0].images} height="150vh" />
                             <span className="m-2">
                                 <h6>{item.nama}</h6>
                                 TYPE: {item.type}

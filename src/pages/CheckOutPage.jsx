@@ -51,7 +51,7 @@ class CheckOutPage extends React.Component {
                                 item.transactionDetail.map((i, index) => {
                                     return (
                                         <div className="d-flex">
-                                            <img height="100vh" src={i.image} />
+                                            {/* <img height="100vh" src={i.images[0].images} /> */}
                                             <div className="d-flex flex-column justify-content-center">
                                                 <span>{i.qty} x {i.nama}</span>
                                                 <span>{i.type}</span>
@@ -97,18 +97,24 @@ class CheckOutPage extends React.Component {
 
         // let totalPayment = Math.round(this.getAllPrice() * 110 / 100)
         // console.log("total",totalPayment)
-
-        unpaidIdTrans.forEach(item => {
-            axios.patch(URL_API + `/transactions/update-trans/${item}`, {
-                idstatus: 7
-            })
-                .then(res => {
-                    console.log("Update status transaksi:", res.data)
-
-                })
-                .catch(err => {
-                    console.log("error update status transaksi", err)
-                })
+        console.log(this.props.id)
+        unpaidIdTrans.forEach ( async item => {
+            try {
+                await axios.patch(URL_API + `/transactions/update-trans/${item}`, {idstatus: 7})
+                await this.props.getTransactionAction(this.props.id)
+            } catch (error) {
+                console.log("error", error)
+            }
+            // axios.patch(URL_API + `/transactions/update-trans/${item}`, {
+            //     idstatus: 7
+            // })
+            //     .then(res => {
+            //         console.log("Update status transaksi:", res.data)
+            //         this.props.getTransactionAction(this.props.id)
+            //     })
+            //     .catch(err => {
+            //         console.log("error update status transaksi", err)
+            //     })
         })
         // axios.patch(URL_API + `/transactions/${dataUnpaid[0].id}`, {
         //     statusPaid: "paid", totalPayment: totalPayment

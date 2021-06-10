@@ -1,6 +1,6 @@
 import axios from "axios"
 import { URL_API } from "../Helper"
-import { LOGIN_SUCCESS, UPDATE_CART } from "./type"
+import { LOGIN_FAILED, LOGIN_SUCCESS, UPDATE_CART } from "./type"
 
 // menyimpan data untuk login
 
@@ -31,15 +31,27 @@ export const authLogin = (email, password) =>{
             email, password
         })
             .then((res) => {
-                localStorage.setItem("tkn_id", res.data[0].id)
-                dispatch({
-                    type: LOGIN_SUCCESS,
-                    payload: res.data[0]
-                })
+                console.log("resdata", res.data)
+                if(res.data[0].status === 'Verified'){
+                    localStorage.setItem("tkn_id", res.data[0].id) 
+                    dispatch({
+                        type: LOGIN_SUCCESS,
+                        payload: res.data[0]
+                    })
+                } else if(res.data[0].status === 'Unverified'){
+                    dispatch({
+                        type: LOGIN_FAILED,
+                        payload: res.data[0]
+                    })
+                } 
+
             })
             .catch((err) =>{
                 console.log("error login", err)
-                // alert("email belum terdaftar")
+                dispatch({
+                    type: LOGIN_FAILED,
+                    payload: []
+                })
             })
     }
 }

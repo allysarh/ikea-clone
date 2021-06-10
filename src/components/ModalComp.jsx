@@ -24,14 +24,16 @@ class ModalComp extends React.Component {
         let nama = this.inNamaProduk.value
         let deskripsi = this.inDeskripsi.value
         let brand = this.inBrand.value
-        // let kategori = this.inKategori.value
+        let idkategori = this.inKategori.value
         let idstatus = 1
         let stok = this.state.stok
         let images = this.state.images
         let harga = parseInt(this.inHarga.value)
 
         console.log("images: ", this.state.images)
-        axios.post(URL_API + `/products/add`, { nama, deskripsi, brand, stok, idstatus, images, harga })
+        console.log("stok", stok)
+        console.log("kategori", idkategori)
+        axios.post(URL_API + `/products/add`, { nama, deskripsi, brand, stok, idstatus, images, harga, idkategori })
             .then((res) => {
                 console.log(res.data)
                 this.props.getProductAction()
@@ -71,8 +73,8 @@ class ModalComp extends React.Component {
         return this.state.stok.map((item, index) => {
             return (
                 <div className="d-flex my-3">
-                    <Input type="text" placeholder={`Type - ${index + 1}`}  onChange={e => this.handleType(e, index)} style={{flex: 2}}/>
-                    <Input type="text" placeholder={`Qty - ${index + 1}`} onChange={e => this.handleQty(e, index)} style={{flex: 2}} className="mx-1"/>
+                    <Input type="text" placeholder={`Type - ${index + 1}`} onChange={e => this.handleType(e, index)} style={{ flex: 2 }} />
+                    <Input type="text" placeholder={`Qty - ${index + 1}`} onChange={e => this.handleQty(e, index)} style={{ flex: 2 }} className="mx-1" />
                     <span className="material-icons btn btn-outline-danger" onClick={() => this.onBtnDeleteStok(index)} >
                         remove
                     </span>
@@ -115,6 +117,16 @@ class ModalComp extends React.Component {
     handleImages = (e, index) => {
         this.state.images[index].images = e.target.value
     }
+
+    printKategori = () => {
+        return this.props.kategori.map(item => {
+            return (
+                <>
+                    <option value={item.idkategori}>{item.kategori}</option>
+                </>
+            )
+        })
+    }
     render() {
         return (
             <>
@@ -137,7 +149,11 @@ class ModalComp extends React.Component {
                                 </FormGroup>
                                 <FormGroup>
                                     <Label>Kategori</Label>
-                                    <Input type="text" innerRef={e => this.inKategori = e} placeholder="Masukkan kategori..." />
+                                    {/* <Input type="text" innerRef={e => this.inKategori = e} placeholder="Masukkan kategori..." /> */}
+                                    <Input type="select" name="select" innerRef={e => this.inKategori = e}>
+                                        <option selected disabled value="">Kategori</option>
+                                        {this.printKategori()}
+                                    </Input>
                                 </FormGroup>
                             </div>
                             <FormGroup>

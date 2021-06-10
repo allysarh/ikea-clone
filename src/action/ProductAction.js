@@ -10,21 +10,28 @@ import { GET_PRODUCT, UPDATE_PRODUCTS } from "./type"
 //     }
 // }
 
-//redux thunk
+//redux thunk 
 // gak usah pake parameter data soalnya udah dapet langsung dari get
 export const getProductAction = () =>{
-    return (dispatch) =>{
-        axios.get(URL_API + `/products/read`)
-        .then((res) =>{
-            // mengarahkan data ke reducer
-            console.log("res data:", res.data)
+    return async (dispatch) =>{
+        try {
+            let res = await axios.get(URL_API + `/products/read`)
+            console.log("res data: -->", res.data)
             dispatch({
                 type: GET_PRODUCT,
-                payload: [...res.data]
+                payload: res.data
             })
-        }).catch(err =>{
-            console.log(err)
-        })
+
+        } catch (error) {
+            console.log("error", error)
+        }
+        // axios.get(URL_API + `/products/read`)
+        // .then((res) =>{
+        //     // mengarahkan data ke reducer
+        //     console.log("res data:", res.data)
+        // }).catch(err =>{
+        //     console.log(err)
+        // })
     }
 }
 
