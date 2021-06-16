@@ -89,10 +89,8 @@ class ProductManagePage extends React.Component {
 
 
     printDataProduk = () => {
-        console.log("data produk", this.props.products)
-
         return this.props.products.map((item, index) => {
-            // console.log("kategori", item.kategori.map(a => a.kategori))
+            
             return (
                 <tr>
                     <td>{index + 1}</td>
@@ -102,9 +100,9 @@ class ProductManagePage extends React.Component {
                         <div style={{ display: 'flex', width: '100%', display: 'flex', justifyContent: 'center'}}>
                             {
                                 index === this.state.thumbnail[0] ?
-                                    <img src={item.images[this.state.thumbnail[1]].images} width="50%" alt={item.nama + index} />
+                                    <img src={item.images[0].images.includes('http') ? item.images[this.state.thumbnail[1]].images : `${URL_API}/${item.images[this.state.thumbnail[1]].images}}`} width="50%" alt={item.nama + index} />
                                     :
-                                    <img src={item.images[0].images} width="50%" alt={item.nama + index} />
+                                    <img src={item.images[0].images.includes('http') ? item.images[0].images : `${URL_API}/${item.images[0].images}`} width="50%" alt={item.nama + index} />
                             }
                         </div>
                         <hr />

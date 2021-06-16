@@ -4,6 +4,7 @@ import axios from 'axios'
 import { URL_API } from '../Helper';
 import { connect } from 'react-redux';
 import { getProductAction } from '../action'
+import { parse } from '@fortawesome/fontawesome-svg-core';
 
 class ModalComp extends React.Component {
     constructor(props) {
@@ -32,29 +33,44 @@ class ModalComp extends React.Component {
             this.setState({ fileName: "Select file", fileUpload: null })
         }
     }
-    onBtnAdd = () => {
-        let nama = this.inNamaProduk.value
-        let deskripsi = this.inDeskripsi.value
-        let brand = this.inBrand.value
-        let idkategori = this.inKategori.value
-        let idstatus = 1
-        let stok = this.state.stok
-        let images = this.state.images
-        let harga = parseInt(this.inHarga.value)
+    onBtnAdd = async () => {
+        // let nama = this.inNamaProduk.value
+        // let deskripsi = this.inDeskripsi.value
+        // let brand = this.inBrand.value
+        // let idkategori = this.inKategori.value
+        // let idstatus = 1
+        // let stok = this.state.stok
+        // let images = this.state.images
+        // let harga = parseInt(this.inHarga.value)
 
-        console.log("images: ", this.state.images)
-        console.log("stok", stok)
-        console.log("kategori", idkategori)
-        axios.post(URL_API + `/products/add`, { nama, deskripsi, brand, stok, idstatus, images, harga, idkategori })
-            .then((res) => {
-                console.log(res.data)
-                this.props.getProductAction()
-            })
-
-        this.props.toggle()
+        try {
+            let formData = new FormData() // ini apa?? --> tempat ngirim data req.body
+            let data = {
+                nama: this.inNamaProduk.value,
+                deskripsi: this.inDeskripsi.value,
+                brand: this.inBrand.value,
+                idkategori: parseInt(this.inKategori.value),
+                idstatus: 1,
+                stok: this.state.stok,
+                harga: parseInt(this.inHarga.value)
+            }
+    
+            // mengirim data bukan dalam bentuk objek lagi karena ada file
+            formData.append('data', JSON.stringify(data))
+            formData.append('images', this.state.fileUpload)
+            
+            let res = await axios.post(URL_API + `/products/add`, formData)
+            console.log("hasil add", await  res.data)
+            await this.props.getProductAction()
+            await this.props.getProductAction()
+            await this.props.toggle()
+        } catch (error) {
+            console.log("error add data", error)
+        }
+    
     }
 
-    // FUNGSI UNTUK ADD STOK TEROS
+    // FUNGSI UNTUK ADD STOK TERUS
     onBtnAddStok = () => {
         let tempStok = [...this.state.stok]
         tempStok.push({ id: null, type: null, qty: null })
@@ -188,7 +204,7 @@ class ModalComp extends React.Component {
                                         <img src={this.state.fileUpload ? URL.createObjectURL(this.state.fileUpload) : 'https://image.flaticon.com/icons/png/512/1837/1837526.png'}
                                             style={{ height: this.state.fileUpload ? '100px' : '30px' }} />
                                     </div>
-                                    <Input placeholder="Search File" type="file" onChange={this.onBtnFile} style={{marginLeft: '30px'}} />
+                                    <Input placeholder="Search File" type="file" onChange={this.onBtnFile} style={{ marginLeft: '30px' }} />
                                 </div>
                             </FormGroup>
                             <FormGroup>

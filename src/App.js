@@ -27,24 +27,25 @@ class App extends React.Component {
     this.state = {}
   }
 
-  reLogin = () => {
-    let token = localStorage.getItem("tkn_id")
-    console.log("id token", token)
-    if (token) {
-      
-      const headers = {
-        headers: {
-          'Authorization': `Bearer ${token}`
+  reLogin = async () => {
+    try {
+      let token = localStorage.getItem("tkn_id")
+      console.log("id token keep login", token)
+      if (token) {
+        const headers = {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
         }
+
+        console.log("headers", headers)
+        let res = await axios.post(URL_API + `/users/keep`, {}, headers)
+        console.log("res data keep login", res.data)
+        this.props.keepLogin(res.data)
       }
-      axios.post(URL_API + `/users/keep`, headers) //diganti pake route baru
-        .then(res => {
-          // console.log("res", res.data[0])
-          this.props.keepLogin(res.data)
-        })
-        .catch(err => {
-          console.log("keeplogin :", err)
-        })
+
+    } catch (error) {
+      console.log("keep login error", error)
     }
   }
 
@@ -74,8 +75,8 @@ class App extends React.Component {
           <Route path="/products" component={ProductsPage} />
           <Route path="/products-detail" component={ProductDetail} />
           <Route path="/shopping-cart" component={ShoppingCartPage} />
-          <Route path="/verif-page" component={VerifPage}/>
-          
+          <Route path="/verif-page" component={VerifPage} />
+
           {
             this.props.role === "Admin" &&
             <>

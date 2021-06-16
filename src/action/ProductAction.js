@@ -16,7 +16,7 @@ export const getProductAction = () =>{
     return async (dispatch) =>{
         try {
             let res = await axios.get(URL_API + `/products/read`)
-            console.log("res data: -->", res.data)
+            console.log("get product action:", res.data)
             dispatch({
                 type: GET_PRODUCT,
                 payload: res.data
