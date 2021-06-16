@@ -3,15 +3,20 @@ import { connect } from "react-redux";
 import { URL_API } from "../Helper";
 import { GET_TRANSACTIONS, UPDATE_TRANSACTIONS } from "./type";
 
-export const getTransactionAction = (id) =>{
+export const getTransactionAction = () =>{
     // return {
     //     type: GET_TRANSACTIONS,
     //     payload: data
     // }
-    console.log("param", id)
+    let token = localStorage.getItem("tkn_id")
+    const headers = {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    }
     return async (dispatch) =>{
         try {
-            let res = await axios.get(URL_API + `/transactions/get-trans/${id}`)
+            let res = await axios.get(URL_API + `/transactions/get-trans`, headers)
             console.log("action", res.data)
             dispatch({
                 type: GET_TRANSACTIONS,

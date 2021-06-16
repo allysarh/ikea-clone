@@ -18,21 +18,21 @@ class TransactionPage extends React.Component {
     }
 
     componentDidMount() {
-        this.props.getTransactionAction(0)
+        this.props.getTransactionAction()
     }
 
     toggle = () => {
         this.setState({ modal: !this.state.modal })
     }
 
-    onBtnConfirm = async (id) => {
+    onBtnConfirm = async (idtrans) => {
         try {
-            console.log("idtrans", id)
-            let res = await axios.patch(URL_API + `/transactions/update-trans/${id}`, {
+            console.log("idtrans", idtrans)
+            let res = await axios.patch(URL_API + `/transactions/update-trans/${idtrans}`, {
                 idstatus: 8
             })
             console.log(res.data)
-            this.props.getTransactionAction(0)
+            this.props.getTransactionAction()
         } catch (error) {
             console.log(error)
         }

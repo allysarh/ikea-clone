@@ -82,7 +82,13 @@ class ProductDetail extends React.Component {
 
             try {
                 if (index < 0) {
-                    let addCart = await axios.post(URL_API + `/transactions/post-cart`, { id, idProduk, idproduk_stok, qty })
+                    let token = localStorage.getItem("tkn_id")
+                    const headers = {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    }
+                    let addCart = await axios.post(URL_API + `/transactions/post-cart`, { idProduk, idproduk_stok, qty }, headers)
                     this.props.updateCart(addCart.data)
                 } else {
                     this.props.cart[index].qty++

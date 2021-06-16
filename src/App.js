@@ -28,15 +28,19 @@ class App extends React.Component {
   }
 
   reLogin = () => {
-    let idToken = localStorage.getItem("tkn_id")
-    console.log("id token", idToken)
-    if (idToken) {
-      axios.post(URL_API + `/users/keep`, {
-        id: idToken
-      }) //diganti pake route baru
+    let token = localStorage.getItem("tkn_id")
+    console.log("id token", token)
+    if (token) {
+      
+      const headers = {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      }
+      axios.post(URL_API + `/users/keep`, headers) //diganti pake route baru
         .then(res => {
           // console.log("res", res.data[0])
-          this.props.keepLogin(res.data[0])
+          this.props.keepLogin(res.data)
         })
         .catch(err => {
           console.log("keeplogin :", err)
@@ -70,7 +74,7 @@ class App extends React.Component {
           <Route path="/products" component={ProductsPage} />
           <Route path="/products-detail" component={ProductDetail} />
           <Route path="/shopping-cart" component={ShoppingCartPage} />
-          <Route poth="/verif-page" component={VerifPage}/>
+          <Route path="/verif-page" component={VerifPage}/>
           
           {
             this.props.role === "Admin" &&

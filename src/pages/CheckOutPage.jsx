@@ -17,7 +17,7 @@ class CheckOutPage extends React.Component {
     }
 
     componentDidMount() {
-        this.props.getTransactionAction(this.props.id)
+        this.props.getTransactionAction()
     }
 
     // getDataTransaction = () => {
@@ -101,7 +101,7 @@ class CheckOutPage extends React.Component {
         unpaidIdTrans.forEach ( async item => {
             try {
                 await axios.patch(URL_API + `/transactions/update-trans/${item}`, {idstatus: 7})
-                await this.props.getTransactionAction(this.props.id)
+                await this.props.getTransactionAction()
             } catch (error) {
                 console.log("error", error)
             }

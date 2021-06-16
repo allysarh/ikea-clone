@@ -22,7 +22,7 @@ class NavbarComp extends React.Component {
             dataSearch: [],
             qty: 0,
             openCart: false,
-            sideNav: true
+            sideNav: false
         }
     }
     getAllQty = () => {

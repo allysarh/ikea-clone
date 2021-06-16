@@ -9,7 +9,7 @@ const VerifPage = (props) => {
     const [message, setMessage] = useState('')
     const [open, setOpen] = useState(false)
     // cek token
-    console.log("lokasi", props.location.pathname.split('/')[2])
+    // console.log("lokasi", props.location.pathname.split('/')[2])
 
     const sendOtp = async () => {
         try {

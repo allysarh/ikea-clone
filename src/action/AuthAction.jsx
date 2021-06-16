@@ -25,28 +25,29 @@ import { LOGIN_FAILED, LOGIN_SUCCESS, UPDATE_CART } from "./type"
 // }
 
 //localhost BE
-export const authLogin = (email, password) =>{
+export const authLogin = (email, password) => {
     return (dispatch) => {
         axios.post(URL_API + `/users/login`, {
             email, password
         })
             .then((res) => {
                 console.log("resdata", res.data)
-                if(res.data[0].status === 'Verified'){
-                    localStorage.setItem("tkn_id", res.data[0].id) 
+                if (res.data.status === 'Verified') {
+                    localStorage.setItem("tkn_id", res.data.token)
                     dispatch({
                         type: LOGIN_SUCCESS,
-                        payload: res.data[0]
+                        payload: res.data
                     })
-                } else if(res.data[0].status === 'Unverified'){
+                } else if (res.data.status === 'Unverified') {
+                    console.log("unverfied", res.data)
                     dispatch({
                         type: LOGIN_FAILED,
-                        payload: res.data[0]
+                        payload: res.data
                     })
-                } 
+                }
 
             })
-            .catch((err) =>{
+            .catch((err) => {
                 console.log("error login", err)
                 dispatch({
                     type: LOGIN_FAILED,
@@ -89,7 +90,7 @@ export const keepLogin = (data) => {
         type: LOGIN_SUCCESS,
         payload: data
         // get cart
-        
+
     }
 }
 
@@ -109,7 +110,7 @@ export const keepLogin = (data) => {
 // }
 
 // UPDATE CART DI SHOPPINGCART
-export const updateCart = (data) =>{
+export const updateCart = (data) => {
     console.log("action", data)
     return {
         type: UPDATE_CART,
@@ -117,10 +118,16 @@ export const updateCart = (data) =>{
     }
 }
 
-export const getCart = (id) =>{
-    return async (dispatch) =>{
+export const getCart = (id) => {
+    return async (dispatch) => {
         try {
-            let res = await axios.get(URL_API + `/transactions/get-cart/${id}`)
+            let token = localStorage.getItem("tkn_id")
+            const headers = {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+            let res = await axios.get(URL_API + `/transactions/get-cart`, {}, headers)
             console.log("res", res.data)
             return res.data
         } catch (error) {
@@ -129,14 +136,14 @@ export const getCart = (id) =>{
     }
 }
 
-export const updateCartQty = ({id, qty, idcart}) =>{
-    console.log("req body patch", {id, qty, idcart})
+export const updateCartQty = ({ id, qty, idcart }) => {
+    console.log("req body patch", { id, qty, idcart })
     return async (dispatch) => {
         try {
             let updateQty = await axios.patch(URL_API + `/transactions/update-qty`, {
                 id, qty, idcart
             })
-            
+
             dispatch({
                 type: UPDATE_CART,
                 payload: updateQty.data
@@ -148,7 +155,7 @@ export const updateCartQty = ({id, qty, idcart}) =>{
     }
 }
 
-export const deleteCart = (id, idcart) =>{
+export const deleteCart = (id, idcart) => {
     return async (dispatch) => {
         try {
             await axios.delete(URL_API + `/transactions/delete-cart/${idcart}`)

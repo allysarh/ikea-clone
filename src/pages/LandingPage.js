@@ -34,7 +34,7 @@ class LandingPage extends React.Component {
     render() {
         return (
             <Container fluid style={{width: '100%'}}>
-                <Sidebar />
+                
                 <PrintCarousel />
                 <CarouselProduct isi={this.printProduk()} />
 

@@ -16,10 +16,22 @@ class ModalComp extends React.Component {
             stok: [],
             images: [],
             thumbnail: 0,
-            order: ''
+            order: '',
+            fileName: "Select File",
+            fileUpload: null,
+            preview: null
         }
     }
 
+    // membaca file yang diupload
+    onBtnFile = (e) => {
+        console.log("e", e.target.files[0])
+        if (e.target.files[0]) {
+            this.setState({ fileName: e.target.files[0].name, fileUpload: e.target.files[0] })
+        } else {
+            this.setState({ fileName: "Select file", fileUpload: null })
+        }
+    }
     onBtnAdd = () => {
         let nama = this.inNamaProduk.value
         let deskripsi = this.inDeskripsi.value
@@ -106,7 +118,7 @@ class ModalComp extends React.Component {
                         <Input type="text" placeholder={`Gambar - ${index + 1}`} onChange={e => this.handleImages(e, index)} />
                         <span className="material-icons btn btn-outline-danger ml-1" style={{ float: 'right' }} onClick={() => this.onBtnDeleteImages(index)}>
                             remove
-                            </span>
+                        </span>
 
                     </div>
                 </>
@@ -160,17 +172,24 @@ class ModalComp extends React.Component {
                                 <Label >Stok</Label>
                                 <span className="material-icons btn btn-outline-success" style={{ float: 'right' }} color="success" onClick={this.onBtnAddStok}>
                                     add
-                                    </span>
+                                </span>
                                 {this.printStok()}
                             </FormGroup>
                             <FormGroup>
                                 <div className="my-3 d-flex justify-content-between align-items-center">
-                                    <Label>Gambar</Label>
+                                    <Label>Gambar: {this.state.fileName}</Label>
                                     <span className="material-icons btn btn-outline-success" style={{ float: 'right' }} color="success" onClick={this.onBtnAddImages}>
                                         add
                                     </span>
                                 </div>
-                                {this.printImages()}
+                                {/* {this.printImages()} */}
+                                <div style={{ display: 'flex', alignItems: 'center' }}>
+                                    <div className={this.state.fileUpload ? 'p-0' : 'p-5 border'}>
+                                        <img src={this.state.fileUpload ? URL.createObjectURL(this.state.fileUpload) : 'https://image.flaticon.com/icons/png/512/1837/1837526.png'}
+                                            style={{ height: this.state.fileUpload ? '100px' : '30px' }} />
+                                    </div>
+                                    <Input placeholder="Search File" type="file" onChange={this.onBtnFile} style={{marginLeft: '30px'}} />
+                                </div>
                             </FormGroup>
                             <FormGroup>
                                 <Label>Harga</Label>

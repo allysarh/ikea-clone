@@ -54,20 +54,20 @@ class ShoppingCartPage extends React.Component {
     // }
 
     onBtnIncrement = (index) => {
-        let {id, cart} = this.props
+        let { id, cart } = this.props
         this.props.cart[index].qty++
         // agar memperbaharui komponen, harus disediakan temporary data
         // this.props.updateCart([...this.props.cart])
         // console.log("props cart sesudah", this.props.cart[index].qty)
-        this.props.updateCartQty({id, qty: cart[index].qty, idcart: cart[index].idcart})
+        this.props.updateCartQty({ id, qty: cart[index].qty, idcart: cart[index].idcart })
     }
 
     onBtnDecrement = (index) => {
-        let {id, cart} = this.props
+        let { id, cart } = this.props
         if (this.props.cart[index].qty > 1) {
             this.props.cart[index].qty--
             // this.props.updateCart([...this.props.cart])
-            this.props.updateCartQty({id, qty: cart[index].qty, idcart: cart[index].idcart})
+            this.props.updateCartQty({ id, qty: cart[index].qty, idcart: cart[index].idcart })
         } else {
             this.onBtnRemove(cart[index].idcart)
         }
@@ -79,7 +79,7 @@ class ShoppingCartPage extends React.Component {
     }
 
     getAllPrice = () => {
-        console.log("cart:",this.props.cart)
+        console.log("cart:", this.props.cart)
         return this.props.cart.map((item, index) => {
             return (item.qty * item.harga)
         }).reduce((a, b) => a + b, 0)
@@ -145,7 +145,7 @@ class ShoppingCartPage extends React.Component {
     }
 
     onBtnRemove = (idcart) => {
-        let {id} = this.props
+        let { id } = this.props
         // this.props.cart.splice(index, 1)
         // axios.patch(URL_API + `/users/${this.props.id}`, { cart: this.props.cart })
         //     .then((res) => {
@@ -154,7 +154,7 @@ class ShoppingCartPage extends React.Component {
         //     .catch((err) => {
         //         console.log("error remove", err)
         //     })
-        this.props.deleteCart(id, idcart )
+        this.props.deleteCart(id, idcart)
     }
 
     resetCart = () => {
@@ -219,13 +219,20 @@ class ShoppingCartPage extends React.Component {
 
         console.table([{ id, username, totalPayment, statusPaid, cart, date }])
         console.log({
-                    id, ongkir, total_payment: totalPayment, note, idstatus, transactionDetail: cart
-                })
+            id, ongkir, total_payment: totalPayment, note, idstatus, transactionDetail: cart
+        })
+
+        let token = localStorage.getItem("tkn_id")
+        const headers = {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }
         if (cart.length > 0) {
             ///post data ke database transaksi
             axios.post(URL_API + `/transactions/add-trans`, {
-                id, ongkir, total_payment: totalPayment, note, idstatus, transactionDetail: cart
-            })
+                ongkir, total_payment: totalPayment, note, idstatus, transactionDetail: cart
+            }, headers)
                 .then((res) => {
                     console.log(res.data)
                     this.props.updateCart(cartReset)
@@ -234,9 +241,9 @@ class ShoppingCartPage extends React.Component {
                     this.setState({ redirectCO: !this.state.redirectCO })
                 })
                 .catch((err) => console.log(err))
-            
-                //post hapus data di database produk
-                
+
+            //post hapus data di database produk
+
         } else {
             alert("anda belum memilih barang!")
         }
@@ -249,7 +256,7 @@ class ShoppingCartPage extends React.Component {
         //data user transaction ditampilkan history page user, transaction page admin
 
         //patch data di database produk
-        
+
     }
     render() {
         if (this.state.redirectCO) {
@@ -285,7 +292,7 @@ class ShoppingCartPage extends React.Component {
                     </span>
                         <span>Check Out</span>
                     </Button>
-                    
+
                 </Container>
             );
         }

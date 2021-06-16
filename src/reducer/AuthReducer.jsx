@@ -22,7 +22,7 @@ export const authReducer = (state = INITIAL_STATE, action) => {
             return { ...state, cart: action.payload }
         case LOGIN_FAILED:
             console.log("reducer", action.payload)
-            return { ...state, status: action.payload.status }
+            return { ...state, status: action.payload}
         case "LOGOUT":
             return INITIAL_STATE
         default:

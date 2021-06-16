@@ -19,7 +19,7 @@ class HistoryPage extends React.Component {
 
     componentDidMount() {
         // this.getTransactionsHistory()
-        this.props.getTransactionAction(this.props.id)
+        this.props.getTransactionAction()
     }
     // getTransactionsHistory = async () => {
     //     try {
